@@ -24,7 +24,9 @@ CANVAS, The mvp is a game where the player can move and obstacles that can kill 
 ## Data structure
 
 game.js
-function Game(canvas){
+
+```
+Game(){
 this.player
 this.obstacles
 this.canvas
@@ -35,10 +37,12 @@ Game.prototype.startLoop()
 Game.prototype.cleanCanvas()
 Game.prototype.updateCanvas()
 Game.prototype.drawCanvas()
+Game.prototype.createObstacles()
 Game.prototype.checkCollistions()
 Game.prototype.setGameOverCallback()
+```
 
-function Obstacles (canvas){
+Obstacles(){
 this.speed
 this.width
 this.height
@@ -51,8 +55,9 @@ this.y
 }
 
 player.js
-function Player(canvas){
+Player(){
 this.lives
+this.size
 this.x
 this.y
 this.canvas
@@ -60,7 +65,6 @@ this.ctx
 this.direction
 }
 Player.prototype.draw ()
-Player.prototype.update ()
 Player.prototype.setDirectionAndMove ()
 Player.prototype.setLives ()
 Player.prototype.checkCollisionsObstacles ()
@@ -69,19 +73,17 @@ Player.prototype.checkCollisionsCanvas ()
 ## States y States Transitions
 
 - main.js
-  - buildDom()
-    - addEventListener("click", buildGameScreen)
+
   - buildSplashScreen()
-    - buildDom(html splash screen)
+
   - buildGameScreen()
+
     - startLoop()
-    - setGameOverCallback(buildGameOverScreen)
-    - addEventListener("keydown", function to control directions and movement)
+    - From here you can go to "Game over" or to "Win" screens
+
   - buildGameOverScreen()
-    - buildDom(html game over screen)
-    - addEventListener("click", buildGameScreen)
+
   - buildWinScreen()
-    addEventListener("load", main)
 
 ## Task
 
@@ -93,7 +95,8 @@ Player.prototype.checkCollisionsCanvas ()
 - player movement
 - obstacles
 - player collisions
-- player game over
+- Game win
+- Game over
 
 ## Links
 

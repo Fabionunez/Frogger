@@ -1,4 +1,4 @@
-// function Obstacles(canvas) {
+// Let Obstacles = function(canvas) {
 //   this.speed
 //   this.width
 //   this.height
