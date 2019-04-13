@@ -9,6 +9,7 @@ let Game = function (canvas) {
   this.time = 2000;
   this.widthTime = 150;
   this.xTime = 345;
+  this.music = "";
 
 }
 
@@ -17,14 +18,11 @@ Game.prototype.startLoop = function () {
   this.player = new Player(this.canvas);
   this.createObstacles();
 
-
-
-
-  // this.music = document.createElement("audio");
-  // this.music.src = ("./src/FroggerArcMainTrack.ogg");
-  // this.music.play();
-  // this.music.volume = 0.07;
-  // this.music.loop = true;
+  this.music = document.createElement("audio");
+  this.music.src = ("./src/FroggerArcMainTrack.ogg");
+  this.music.play();
+  this.music.volume = 0.07;
+  this.music.loop = true;
 
 
 
@@ -199,7 +197,7 @@ Game.prototype.checkCollistions = function () {
       if (this.player.lives === 0) {
         this.gameOver = true;
         this.buildGameOverScreen("losse");
-        //this.music.stop();
+        this.music.src = "";
       }
 
     }
@@ -210,6 +208,7 @@ Game.prototype.checkCollistions = function () {
   if (this.player.y === 340) {
     this.gameOver = true;
     this.buildGameOverScreen("win");
+    this.music.src = "";
   }
 
 }
@@ -239,7 +238,7 @@ Game.prototype.loseLive = function () {
   this.loseLiveSound = document.createElement("audio");
   this.loseLiveSound.src = ("./src/sound-frogger-squash.wav");
   this.loseLiveSound.play();
-  this.loseLiveSound.volume = 0.5;
+  this.loseLiveSound.volume = 0.1;
   this.widthTime = 150;
   this.xTime = 345;
   this.time = 2000;

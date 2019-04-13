@@ -5,6 +5,7 @@ function main() {
 
   const mainElement = document.querySelector("main");
 
+
   function buildDom(html) {
     mainElement.innerHTML = html;
     return mainElement;
@@ -41,6 +42,8 @@ function main() {
 
 
     var game = new Game(canvasElement);
+
+
 
     game.startLoop();
 
