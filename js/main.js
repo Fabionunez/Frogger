@@ -25,6 +25,7 @@ function main() {
   }
 
   function buildGameScreen() {
+
     let gameScreen = `
     <section class="game-container">
      <canvas></canvas>
@@ -35,13 +36,18 @@ function main() {
     const canvasElement = document.querySelector("canvas");
 
 
-    canvasElement.setAttribute("width", "600px");
-    canvasElement.setAttribute("height", "700px");
+    canvasElement.setAttribute("width", 600);
+    canvasElement.setAttribute("height", 700);
 
 
-    const game = new Game(canvasElement);
+    var game = new Game(canvasElement);
 
     game.startLoop();
+
+
+    game.setGameOverCallback(buildGameOverScreen);
+    //game.setWinCallBack(buildWinScreen);
+
 
     document.addEventListener("keydown", function () {
 
@@ -61,30 +67,44 @@ function main() {
 
   }
 
-  function buildGameOverScreen() {
-    let gameOverScreen = `
-    <section>
-    <h1>Game over</h1>
-    <button id="play-again-button">Play again</button>
-    </sectiona
-    `;
+  function buildGameOverScreen(result) {
+
+
+    if (result === "win") {
+      console.log(result);
+      var gameOverScreen = `
+      <section>
+      <h1>You win!</h1>
+      <button id="play-again-button">Play again</button>
+      </section>
+      `;
+    } else {
+      var gameOverScreen = `
+      <section>
+      <h1>You losse!</h1>
+      <button id="play-again-button">Play again</button>
+      </section>`;
+    }
 
     buildDom(gameOverScreen);
 
-    const playAgainButton = document.getElementById("play-again-button");
-
+    var playAgainButton = document.getElementById("play-again-button");
     playAgainButton.addEventListener("click", buildGameScreen);
   }
 
   function buildWinScreen() {
-    let winScreen = `
+    let WinScreen = `
     <section>
-      <h1 > You win! < /h1> <
-      button id = "play-again-button" > < /button> <
-      /section>`;
-    const playAgainButton = document.getElementById("play-again-button");
-    playAgainButton.addEventListener("click", buildGameScreen);
+    <h1>You win!</h1>
+    <button id="play-again-button2">Play again</button>
+    </section>
+    `;
 
+    buildDom(WinScreen);
+
+    const playAgainButton2 = document.getElementById("play-again-button2");
+
+    playAgainButton2.addEventListener("click", buildGameScreen);
   }
 
 

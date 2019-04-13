@@ -11,9 +11,17 @@ let Obstacles = function (canvas, speed, row, direction, width, x, y) {
 }
 
 Obstacles.prototype.draw = function () {
-  this.ctx.fillStyle = "red";
-  this.ctx.fillRect(this.x, this.y, this.width, this.height);
-
+  if (this.row === 1) {
+    var obstacleImage = new Image();
+    obstacleImage.src = "./img/obstacle1.png";
+  } else if (this.row === 2) {
+    var obstacleImage = new Image();
+    obstacleImage.src = "./img/obstacle2.png";
+  } else if (this.row === 3) {
+    var obstacleImage = new Image();
+    obstacleImage.src = "./img/obstacle3.png";
+  }
+  this.ctx.drawImage(obstacleImage, this.x, this.y, this.width, this.height);
 }
 Obstacles.prototype.update = function () {
   this.x = this.x + this.direction * this.speed;
