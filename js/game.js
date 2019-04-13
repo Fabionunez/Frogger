@@ -14,6 +14,8 @@ Game.prototype.startLoop = function () {
   this.createObstacles();
 
 
+  ;
+
   // this.music = document.createElement("audio");
   // this.music.src = ("./src/FroggerArcMainTrack.ogg");
   // this.music.play();
@@ -26,26 +28,49 @@ Game.prototype.startLoop = function () {
     this.updateCanvas();
     this.drawCanvas();
     this.checkCollistions();
-    if (this.gameOver === false) {
 
+    if (this.gameOver === false) {
       window.requestAnimationFrame(loop);
     }
   }
   window.requestAnimationFrame(loop);
 }
 
+
 Game.prototype.clearCanvas = function () {
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 }
+
 
 Game.prototype.updateCanvas = function () {
   this.obstacles.forEach(function (obstacle) {
     obstacle.update();
   });
+
+  //Image background
   var background = new Image();
   background.src = "./img/background.png";
   this.ctx.drawImage(background, 0, 2, 600, 696);
+
+
+  //number of lives
+  var lives = new Image();
+  lives.src = "./img/frog.png";
+
+  if (this.player.lives === 3) {
+    this.ctx.drawImage(lives, 5, 650, 25, 25);
+    this.ctx.drawImage(lives, 35, 650, 25, 25);
+    this.ctx.drawImage(lives, 65, 650, 25, 25)
+  } else if (this.player.lives === 2) {
+    this.ctx.drawImage(lives, 5, 650, 25, 25);
+    this.ctx.drawImage(lives, 35, 650, 25, 25);
+  } else {
+    this.ctx.drawImage(lives, 5, 650, 25, 25);
+  }
+
+
 }
+
 
 Game.prototype.drawCanvas = function () {
   this.player.draw();
@@ -53,6 +78,7 @@ Game.prototype.drawCanvas = function () {
     obstacle.draw();
   });
 }
+
 
 Game.prototype.createObstacles = function () {
 
@@ -80,6 +106,7 @@ Game.prototype.createObstacles = function () {
   this.obstacles.push(new Obstacles(this.canvas, 3, 1, -1, 37, getXObstacle(this.canvas.width, 3, 37, 2), 540));
   this.obstacles.push(new Obstacles(this.canvas, 3, 1, -1, 37, getXObstacle(this.canvas.width, 3, 37, 3), 540));
 
+
   // //initial row 2
   this.obstacles.push(new Obstacles(this.canvas, 1, 2, 1, 33, getXObstacle(this.canvas.width, 3, 33, 1), 490)); // (canvas, speed, row, direction, width, x, y)
   this.obstacles.push(new Obstacles(this.canvas, 1, 2, 1, 33, getXObstacle(this.canvas.width, 3, 33, 2), 490));
@@ -104,24 +131,44 @@ Game.prototype.createObstacles = function () {
   // }, 1000);
 
 }
+
 Game.prototype.checkCollistions = function () {
 
   //check collision canvas
   this.player.checkCollisionsCanvas();
 
   //check collision obstacles
-  this.obstacles.forEach((obstacle, index) => { // problema de profundidad del this que se soluciona con arrow function
+  this.obstacles.forEach((obstacle, index) => {
+
     const isColliding = this.player.checkCollisionsObstacles(obstacle);
+
     if (isColliding) {
       console.log("colision");
-      //this.enemies.splice(index, 1);
+
       this.player.setLives();
-      //console.log(this.player.lives);
+      this.player.x = 30000;
+      this.player.y = 30000;
+      this.loseLive = document.createElement("audio");
+      this.loseLive.src = ("./src/sound-frogger-squash.wav");
+      this.loseLive.play();
+      this.loseLive.volume = 0.5;
+
+      setTimeout(() => {
+        this.player.x = 300;
+        this.player.y = 590;
+      }, 1000)
+
+
+      console.log(this.player.lives);
+
       if (this.player.lives === 0) {
         this.gameOver = true;
         this.buildGameOverScreen("losse");
+        this.music.stop();
       }
+
     }
+
   });
 
   //check the collision with arrival goal

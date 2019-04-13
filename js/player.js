@@ -23,6 +23,12 @@ Player.prototype.setDirectionAndMove = function (direction) {
 
   if (!this.checkCollisionsCanvas()) {
 
+
+    this.hop = document.createElement("audio");
+    this.hop.src = ("./src/sound-frogger-hop.wav");
+    this.hop.play();
+
+
     //console.log(this.checkCollisionsCanvas(), this.direction, this.x, this.y);
     switch (direction) {
       case "n":
@@ -41,6 +47,9 @@ Player.prototype.setDirectionAndMove = function (direction) {
   }
 }
 Player.prototype.setLives = function (live) {
+
+
+
   this.lives--;
 }
 Player.prototype.checkCollisionsObstacles = function (obstacle) {
