@@ -13,8 +13,8 @@ function main() {
   function buildSplashScreen() {
     let splashScreen = `
     <section>
-    <h1>Frogger</h1>
-    <button id="start-button">Start-game</button>
+    <p><img src="./img/logo.png" width="522" height="53"/></p>
+    <button id="start-button">START GAME</button>
     </section>`;
     // console.log(splashScreen);
     buildDom(splashScreen);
@@ -75,14 +75,14 @@ function main() {
       var gameOverScreen = `
       <section>
       <h1>You win!</h1>
-      <button id="play-again-button">Play again</button>
+      <button id="play-again-button">PLAY AGAIN</button>
       </section>
       `;
     } else {
       var gameOverScreen = `
       <section>
       <h1>Game over</h1>
-      <button id="play-again-button">Play again</button>
+      <button id="play-again-button">PLAY AGAIN</button>
       </section>`;
     }
 

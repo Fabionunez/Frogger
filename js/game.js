@@ -167,7 +167,6 @@ Game.prototype.createObstacles = function () {
 
   setInterval(() => {
     this.obstacles.push(new Obstacles(this.canvas, 3, 1, -1, 37, getXObstacle(this.canvas.width, 3, 37, 1) + this.canvas.width, 540));
-
   }, 1000);
 
 
