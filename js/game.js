@@ -6,6 +6,10 @@ let Game = function (canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   this.gameOver = false;
+  this.time = 2000;
+  this.widthTime = 150;
+  this.xTime = 345;
+
 }
 
 Game.prototype.startLoop = function () {
@@ -14,7 +18,7 @@ Game.prototype.startLoop = function () {
   this.createObstacles();
 
 
-  ;
+
 
   // this.music = document.createElement("audio");
   // this.music.src = ("./src/FroggerArcMainTrack.ogg");
@@ -23,7 +27,19 @@ Game.prototype.startLoop = function () {
   // this.music.loop = true;
 
 
+
+  // setTimeout(() => {
+  //   console.log("timeout");
+  //   this.loseLive();
+  // }, 5000);
+
+
+
   const loop = () => {
+
+    this.time--;
+
+
     this.clearCanvas();
     this.updateCanvas();
     this.drawCanvas();
@@ -37,12 +53,17 @@ Game.prototype.startLoop = function () {
 }
 
 
+
+
 Game.prototype.clearCanvas = function () {
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 }
 
 
+
+
 Game.prototype.updateCanvas = function () {
+
   this.obstacles.forEach(function (obstacle) {
     obstacle.update();
   });
@@ -58,18 +79,39 @@ Game.prototype.updateCanvas = function () {
   lives.src = "./img/frog.png";
 
   if (this.player.lives === 3) {
-    this.ctx.drawImage(lives, 5, 650, 25, 25);
-    this.ctx.drawImage(lives, 35, 650, 25, 25);
-    this.ctx.drawImage(lives, 65, 650, 25, 25)
+    this.ctx.drawImage(lives, 5, 655, 25, 25);
+    this.ctx.drawImage(lives, 35, 655, 25, 25);
+    this.ctx.drawImage(lives, 65, 655, 25, 25)
   } else if (this.player.lives === 2) {
-    this.ctx.drawImage(lives, 5, 650, 25, 25);
-    this.ctx.drawImage(lives, 35, 650, 25, 25);
+    this.ctx.drawImage(lives, 5, 655, 25, 25);
+    this.ctx.drawImage(lives, 35, 655, 25, 25);
   } else {
-    this.ctx.drawImage(lives, 5, 650, 25, 25);
+    this.ctx.drawImage(lives, 5, 655, 25, 25);
   }
+
+  // Score points
+  this.ctx.fillStyle = "white";
+  this.ctx.font = "20px 'Press Start 2P'";
+  this.ctx.fillText("SCORE: " + this.player.score, 25, 38);
+
+  // Timer
+  this.ctx.fillStyle = "#FFFF03";
+  this.ctx.font = "20px 'Press Start 2P'";
+  this.ctx.fillText("TIME", 500, 680);
+  if (this.time < 0) {
+    this.loseLive();
+  }
+  this.ctx.fillStyle = "#21DF01";
+  this.widthTime = this.widthTime - (this.widthTime / this.time);
+  this.xTime = this.xTime + (this.widthTime / this.time);
+
+  this.ctx.fillRect(this.xTime, 660, this.widthTime, 20);
 
 
 }
+
+
+
 
 
 Game.prototype.drawCanvas = function () {
@@ -77,7 +119,11 @@ Game.prototype.drawCanvas = function () {
   this.obstacles.forEach(function (obstacle) {
     obstacle.draw();
   });
+
 }
+
+
+
 
 
 Game.prototype.createObstacles = function () {
@@ -132,6 +178,11 @@ Game.prototype.createObstacles = function () {
 
 }
 
+
+
+
+
+
 Game.prototype.checkCollistions = function () {
 
   //check collision canvas
@@ -143,28 +194,13 @@ Game.prototype.checkCollistions = function () {
     const isColliding = this.player.checkCollisionsObstacles(obstacle);
 
     if (isColliding) {
-      console.log("colision");
 
-      this.player.setLives();
-      this.player.x = 30000;
-      this.player.y = 30000;
-      this.loseLive = document.createElement("audio");
-      this.loseLive.src = ("./src/sound-frogger-squash.wav");
-      this.loseLive.play();
-      this.loseLive.volume = 0.5;
-
-      setTimeout(() => {
-        this.player.x = 300;
-        this.player.y = 590;
-      }, 1000)
-
-
-      console.log(this.player.lives);
+      this.loseLive();
 
       if (this.player.lives === 0) {
         this.gameOver = true;
         this.buildGameOverScreen("losse");
-        this.music.stop();
+        //this.music.stop();
       }
 
     }
@@ -178,13 +214,45 @@ Game.prototype.checkCollistions = function () {
   }
 
 }
+
+
+
+
 Game.prototype.setGameOverCallback = function (buildGameOverScreen) {
   this.buildGameOverScreen = buildGameOverScreen; // to access to the functions of other file
 
 }
 
+
+
+
 Game.prototype.setWinCallBack = function (buildWinScreen) {
   this.buildWinScreen = buildWinScreen; // to access to the functions of other file
 
+
+}
+
+Game.prototype.loseLive = function () {
+
+  this.player.setLives();
+  this.player.x = 30000;
+  this.player.y = 30000;
+  this.loseLiveSound = document.createElement("audio");
+  this.loseLiveSound.src = ("./src/sound-frogger-squash.wav");
+  this.loseLiveSound.play();
+  this.loseLiveSound.volume = 0.5;
+  this.widthTime = 150;
+  this.xTime = 345;
+  this.time = 2000;
+
+  setTimeout(() => {
+    this.player.x = 300;
+    this.player.y = 590;
+  }, 1000)
+
+  if (this.player.lives === 0) {
+    this.gameOver = true;
+    this.buildGameOverScreen("losse");
+  }
 
 }

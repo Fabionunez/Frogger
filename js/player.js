@@ -6,6 +6,7 @@ let Player = function (canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   this.direction = "n";
+  this.score = 0;
 }
 
 Player.prototype.draw = function () {
@@ -23,19 +24,19 @@ Player.prototype.setDirectionAndMove = function (direction) {
 
   if (!this.checkCollisionsCanvas()) {
 
-
     this.hop = document.createElement("audio");
     this.hop.src = ("./src/sound-frogger-hop.wav");
     this.hop.play();
-
 
     //console.log(this.checkCollisionsCanvas(), this.direction, this.x, this.y);
     switch (direction) {
       case "n":
         this.y -= this.size;
+        this.setScore(10)
         break;
       case "s":
         this.y += this.size;
+        this.setScore(-10)
         break;
       case "e":
         this.x -= this.size;
@@ -47,11 +48,9 @@ Player.prototype.setDirectionAndMove = function (direction) {
   }
 }
 Player.prototype.setLives = function (live) {
-
-
-
   this.lives--;
 }
+
 Player.prototype.checkCollisionsObstacles = function (obstacle) {
 
   const collisionRight = this.x + this.size / 2 > obstacle.x - obstacle.width / 2;
@@ -77,5 +76,10 @@ Player.prototype.checkCollisionsCanvas = function () {
     stop = true;
   }
 
-  return stop; //boolean
+  return stop;
+}
+
+Player.prototype.setScore = function (points) {
+  this.score += points;
+
 }

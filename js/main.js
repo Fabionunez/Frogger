@@ -81,7 +81,7 @@ function main() {
     } else {
       var gameOverScreen = `
       <section>
-      <h1>You losse!</h1>
+      <h1>Game over</h1>
       <button id="play-again-button">Play again</button>
       </section>`;
     }
