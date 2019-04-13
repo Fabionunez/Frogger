@@ -53,6 +53,8 @@ this.ctx
 this.x
 this.y
 }
+Game.prototype.draw()
+Game.prototype.update()
 
 player.js
 Player(){

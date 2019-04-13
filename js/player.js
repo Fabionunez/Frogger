@@ -9,14 +9,15 @@ let Player = function (canvas) {
 }
 
 Player.prototype.draw = function () {
-  this.ctx.fillRect(this.x, this.y, this.size, this.size);
   this.ctx.fillStyle = "greenyellow";
+  this.ctx.fillRect(this.x, this.y, this.size, this.size);
+
 
 
 }
-Player.prototype.update = function () {
+// Player.prototype.update = function () {
 
-}
+// }
 Player.prototype.setDirectionAndMove = function (direction) {
 
   this.direction = direction;

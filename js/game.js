@@ -2,7 +2,7 @@
 
 let Game = function (canvas) {
   this.player = null;
-  this.obstacles = {};
+  this.obstacles = [];
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   this.gameOver = false;
@@ -11,6 +11,8 @@ let Game = function (canvas) {
 Game.prototype.startLoop = function () {
 
   this.player = new Player(this.canvas);
+
+  this.obstacles.push(new Obstacles(this.canvas, 1, 1, -1, 100, 50, 50)); // (canvas, speed, row, direction, width, x, y)
 
 
 
@@ -21,7 +23,7 @@ Game.prototype.startLoop = function () {
     // }
     // console.log("hi");
     this.clearCanvas();
-    //this.updateCanvas();
+    this.updateCanvas();
     this.drawCanvas();
     // // this.checkCollistions();a
     // // if (this.gameOver === true) {
@@ -36,12 +38,17 @@ Game.prototype.startLoop = function () {
 Game.prototype.clearCanvas = function () {
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 }
-// Game.prototype.updateCanvas = function () {
-//   this.player.update();
+Game.prototype.updateCanvas = function () {
+  this.obstacles.forEach(function (obstacle) {
+    obstacle.update();
+  });
 
-// }
+}
 Game.prototype.drawCanvas = function () {
   this.player.draw();
+  this.obstacles.forEach(function (obstacle) {
+    obstacle.draw();
+  });
 
 }
 Game.prototype.createObstacles = function () {}
@@ -49,3 +56,5 @@ Game.prototype.checkCollistions = function () {
   this.player.checkCollisionsCanvas();
 }
 Game.prototype.setGameOverCallback = function () {}
+
+Game.prototype.setWinCallBack = function () {}

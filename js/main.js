@@ -79,7 +79,7 @@ function main() {
   function buildWinScreen() {
     let winScreen = `
     <section>
-      <h1 > You rock! < /h1> <
+      <h1 > You win! < /h1> <
       button id = "play-again-button" > < /button> <
       /section>`;
     const playAgainButton = document.getElementById("play-again-button");
