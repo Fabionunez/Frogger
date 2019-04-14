@@ -95,7 +95,7 @@ Game.prototype.updateCanvas = function () {
   this.widthTime = this.widthTime - (this.widthTime / this.time);
   this.xTime = this.xTime + (this.widthTime / this.time);
 
-  this.ctx.fillRect(this.xTime, 660, this.widthTime, 20);
+  this.ctx.fillRect(this.xTime, 660, this.widthTime, 18);
 
 }
 
@@ -113,60 +113,26 @@ Game.prototype.drawCanvas = function () {
 }
 
 
-
-
-
 Game.prototype.createObstacles = function () {
 
-  function getXObstacle(canvas, numObstacles, widthObstacles, position) {
-
-    let xObstacle = 0;
-    let spacing = 0;
-    //console.log(canvas, numObstacles, widthObstacles)
-    spacing = (canvas - (numObstacles * widthObstacles)) / (numObstacles - 1);
-    //console.log(spacing);
-
-    if (position === 1) {
-      xObstacle = 0;
-    } else if (position === 2) {
-      xObstacle = widthObstacles + spacing;
-    } else if (position === 3) {
-      xObstacle = widthObstacles * 2 + spacing * 2;
-    }
-
-    return xObstacle;
+  // Canvas width divided by the number of obstacles and multiply for 200 (number of elements necesaries to keep up three lives)
+  for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
+    // (canvas, speed, row, direction, width, x, y)
+    this.obstacles.push(new Obstacles(this.canvas, 3, 1, -1, 37, 0 + i, 540));
   }
 
-  //initial row 1
-  this.obstacles.push(new Obstacles(this.canvas, 3, 1, -1, 37, getXObstacle(this.canvas.width, 3, 37, 1), 540)); // (canvas, speed, row, direction, width, x, y)
-  this.obstacles.push(new Obstacles(this.canvas, 3, 1, -1, 37, getXObstacle(this.canvas.width, 3, 37, 2), 540));
-  this.obstacles.push(new Obstacles(this.canvas, 3, 1, -1, 37, getXObstacle(this.canvas.width, 3, 37, 3), 540));
+  for (var i = 0; i < (this.canvas.width / 3.5) * 200; i += (this.canvas.width / 3.5)) {
+    this.obstacles.push(new Obstacles(this.canvas, 1, 2, -1, 37, 0 + i, 490));
+  }
 
+  for (var i = 0; i < (this.canvas.width / 2.5) * 200; i += (this.canvas.width / 2.5)) {
+    this.obstacles.push(new Obstacles(this.canvas, 2, 3, -1, 37, 0 + i, 440));
+  }
 
-  // //initial row 2
-  this.obstacles.push(new Obstacles(this.canvas, 1, 2, 1, 33, getXObstacle(this.canvas.width, 3, 33, 1), 490)); // (canvas, speed, row, direction, width, x, y)
-  this.obstacles.push(new Obstacles(this.canvas, 1, 2, 1, 33, getXObstacle(this.canvas.width, 3, 33, 2), 490));
-  this.obstacles.push(new Obstacles(this.canvas, 1, 2, 1, 33, getXObstacle(this.canvas.width, 3, 33, 3), 490));
-
-  // //initial row 2
-  this.obstacles.push(new Obstacles(this.canvas, 1, 3, -1, 33, getXObstacle(this.canvas.width, 3, 33, 1), 440)); // (canvas, speed, row, direction, width, x, y)
-  this.obstacles.push(new Obstacles(this.canvas, 1, 3, -1, 33, getXObstacle(this.canvas.width, 3, 33, 2), 440));
-  this.obstacles.push(new Obstacles(this.canvas, 1, 3, -1, 33, getXObstacle(this.canvas.width, 3, 33, 3), 440));
-
-
-
-  setInterval(() => {
-    this.obstacles.push(new Obstacles(this.canvas, 3, 1, -1, 37, getXObstacle(this.canvas.width, 3, 37, 1) + this.canvas.width, 540));
-  }, 1000);
-
-
-  // setInterval(() => {
-  //   this.obstacles.push(new Obstacles(this.canvas, 1, 2, 1, 33, getXObstacle(this.canvas.width, 3, 33, 1) - this.canvas.width, 490)); // (canvas, speed, row, direction, width, x, y)
-
-  // }, 1000);
-
+  for (var i = 0; i < (this.canvas.width / 2) * 200; i += (this.canvas.width / 2)) {
+    this.obstacles.push(new Obstacles(this.canvas, 10, 4, 1, 37, 600 - i, 390));
+  }
 }
-
 
 
 
@@ -194,7 +160,7 @@ Game.prototype.checkCollistions = function () {
   });
 
   //check the collision with arrival goal
-  if (this.player.y === 340) {
+  if (this.player.y === 290) {
     this.gameOver = true;
     this.buildGameOverScreen("win");
     this.music.src = "";
@@ -230,7 +196,7 @@ Game.prototype.loseLive = function () {
   setTimeout(() => {
     this.player.x = 300;
     this.player.y = 590;
-  }, 1000)
+  }, 800)
 
   if (this.player.lives === 0) {
     this.gameOver = true;

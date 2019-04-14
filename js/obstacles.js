@@ -22,6 +22,9 @@ Obstacles.prototype.draw = function () {
   } else if (this.row === 3) {
     var obstacleImage = new Image();
     obstacleImage.src = "./img/obstacle3.png";
+  } else if (this.row === 4) {
+    var obstacleImage = new Image();
+    obstacleImage.src = "./img/obstacle4.png";
   }
   this.ctx.drawImage(obstacleImage, this.x, this.y, this.width, this.height);
 }

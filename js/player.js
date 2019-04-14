@@ -93,7 +93,7 @@ Player.prototype.checkCollisionsCanvas = function () {
 
   let stop = false;
 
-  if (this.direction === "n" && this.y === 340) {
+  if (this.direction === "n" && this.y === 290) {
     stop = true;
   } else if (this.direction === "s" && this.y === 590) {
     stop = true;
