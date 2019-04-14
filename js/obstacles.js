@@ -10,6 +10,8 @@ let Obstacles = function (canvas, speed, row, direction, width, x, y) {
   this.y = y;
 }
 
+
+
 Obstacles.prototype.draw = function () {
   if (this.row === 1) {
     var obstacleImage = new Image();
@@ -23,7 +25,9 @@ Obstacles.prototype.draw = function () {
   }
   this.ctx.drawImage(obstacleImage, this.x, this.y, this.width, this.height);
 }
+
+
+
 Obstacles.prototype.update = function () {
   this.x = this.x + this.direction * this.speed;
-
 }

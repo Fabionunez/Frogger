@@ -9,14 +9,22 @@ let Player = function (canvas) {
   this.score = 0;
 }
 
+
+
+
+
 Player.prototype.draw = function () {
-  // this.ctx.fillStyle = "greenyellow";
-  // this.ctx.fillRect(this.x, this.y, this.size, this.size);
+
   var playerImage = new Image();
+
   playerImage.src = "./img/frog.png";
   this.ctx.drawImage(playerImage, this.x, this.y, this.size, this.size);
 
 }
+
+
+
+
 
 Player.prototype.setDirectionAndMove = function (direction) {
 
@@ -27,6 +35,8 @@ Player.prototype.setDirectionAndMove = function (direction) {
     this.hop = document.createElement("audio");
     this.hop.src = ("./src/sound-frogger-hop.wav");
     this.hop.play();
+    this.hop.volume = 0.07;
+
 
     //console.log(this.checkCollisionsCanvas(), this.direction, this.x, this.y);
     switch (direction) {
@@ -47,9 +57,23 @@ Player.prototype.setDirectionAndMove = function (direction) {
     }
   }
 }
+
+
+
+
 Player.prototype.setLives = function (live) {
   this.lives--;
 }
+
+
+
+
+Player.prototype.setScore = function (points) {
+  this.score += points;
+}
+
+
+
 
 Player.prototype.checkCollisionsObstacles = function (obstacle) {
 
@@ -60,8 +84,11 @@ Player.prototype.checkCollisionsObstacles = function (obstacle) {
 
   return collisionRight && collisionLeft && collisionTop && collisionBottom;
 
-
 }
+
+
+
+
 Player.prototype.checkCollisionsCanvas = function () {
 
   let stop = false;
@@ -77,9 +104,4 @@ Player.prototype.checkCollisionsCanvas = function () {
   }
 
   return stop;
-}
-
-Player.prototype.setScore = function (points) {
-  this.score += points;
-
 }

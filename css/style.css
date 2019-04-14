@@ -93,7 +93,7 @@ section {
   width: 604px;
   height: 700px;
   box-sizing: border-box;
-  border: 2px solid greenyellow;
+  border: 2px solid #33CC00;
 }
 
 
@@ -112,7 +112,7 @@ canvas {
 }
 
 body {
-  color: greenyellow;
+  color: #33CC00;
   background-color: black;
 }
 

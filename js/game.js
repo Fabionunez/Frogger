@@ -13,6 +13,8 @@ let Game = function (canvas) {
 
 }
 
+
+
 Game.prototype.startLoop = function () {
 
   this.player = new Player(this.canvas);
@@ -24,20 +26,9 @@ Game.prototype.startLoop = function () {
   this.music.volume = 0.07;
   this.music.loop = true;
 
-
-
-  // setTimeout(() => {
-  //   console.log("timeout");
-  //   this.loseLive();
-  // }, 5000);
-
-
-
   const loop = () => {
 
     this.time--;
-
-
     this.clearCanvas();
     this.updateCanvas();
     this.drawCanvas();
@@ -46,6 +37,7 @@ Game.prototype.startLoop = function () {
     if (this.gameOver === false) {
       window.requestAnimationFrame(loop);
     }
+
   }
   window.requestAnimationFrame(loop);
 }
@@ -62,17 +54,17 @@ Game.prototype.clearCanvas = function () {
 
 Game.prototype.updateCanvas = function () {
 
+  // Update positions obstacles
   this.obstacles.forEach(function (obstacle) {
     obstacle.update();
   });
 
-  //Image background
+  // Update background image
   var background = new Image();
   background.src = "./img/background.png";
   this.ctx.drawImage(background, 0, 2, 600, 696);
 
-
-  //number of lives
+  // Upcate number of lives
   var lives = new Image();
   lives.src = "./img/frog.png";
 
@@ -87,26 +79,26 @@ Game.prototype.updateCanvas = function () {
     this.ctx.drawImage(lives, 5, 655, 25, 25);
   }
 
-  // Score points
+  // Update score points
   this.ctx.fillStyle = "white";
   this.ctx.font = "20px 'Press Start 2P'";
   this.ctx.fillText("SCORE: " + this.player.score, 25, 38);
 
-  // Timer
+  // Update timer
   this.ctx.fillStyle = "#FFFF03";
   this.ctx.font = "20px 'Press Start 2P'";
   this.ctx.fillText("TIME", 500, 680);
-  if (this.time < 0) {
-    this.loseLive();
-  }
+
+  if (this.time < 0) this.loseLive();
+
   this.ctx.fillStyle = "#21DF01";
   this.widthTime = this.widthTime - (this.widthTime / this.time);
   this.xTime = this.xTime + (this.widthTime / this.time);
 
   this.ctx.fillRect(this.xTime, 660, this.widthTime, 20);
 
-
 }
+
 
 
 
@@ -191,15 +183,12 @@ Game.prototype.checkCollistions = function () {
     const isColliding = this.player.checkCollisionsObstacles(obstacle);
 
     if (isColliding) {
-
       this.loseLive();
-
       if (this.player.lives === 0) {
         this.gameOver = true;
         this.buildGameOverScreen("losse");
         this.music.src = "";
       }
-
     }
 
   });
@@ -210,35 +199,30 @@ Game.prototype.checkCollistions = function () {
     this.buildGameOverScreen("win");
     this.music.src = "";
   }
-
 }
+
 
 
 
 
 Game.prototype.setGameOverCallback = function (buildGameOverScreen) {
   this.buildGameOverScreen = buildGameOverScreen; // to access to the functions of other file
-
 }
 
 
 
-
-Game.prototype.setWinCallBack = function (buildWinScreen) {
-  this.buildWinScreen = buildWinScreen; // to access to the functions of other file
-
-
-}
 
 Game.prototype.loseLive = function () {
 
   this.player.setLives();
   this.player.x = 30000;
   this.player.y = 30000;
+
   this.loseLiveSound = document.createElement("audio");
   this.loseLiveSound.src = ("./src/sound-frogger-squash.wav");
   this.loseLiveSound.play();
   this.loseLiveSound.volume = 0.1;
+
   this.widthTime = 150;
   this.xTime = 345;
   this.time = 2000;

@@ -6,10 +6,14 @@ function main() {
   const mainElement = document.querySelector("main");
 
 
+
   function buildDom(html) {
     mainElement.innerHTML = html;
     return mainElement;
   }
+
+
+
 
   function buildSplashScreen() {
     let splashScreen = `
@@ -22,8 +26,10 @@ function main() {
 
     const startButton = document.getElementById("start-button")
     startButton.addEventListener("click", buildGameScreen);
-
   }
+
+
+
 
   function buildGameScreen() {
 
@@ -35,25 +41,15 @@ function main() {
     buildDom(gameScreen);
 
     const canvasElement = document.querySelector("canvas");
-
-
     canvasElement.setAttribute("width", 600);
     canvasElement.setAttribute("height", 700);
 
-
     var game = new Game(canvasElement);
-
-
-
     game.startLoop();
-
-
     game.setGameOverCallback(buildGameOverScreen);
-    //game.setWinCallBack(buildWinScreen);
 
 
     document.addEventListener("keydown", function () {
-
       if (event.keyCode === 38) {
         game.player.setDirectionAndMove("n");
       } else if (event.keyCode === 40) {
@@ -63,12 +59,12 @@ function main() {
       } else if (event.keyCode === 39) {
         game.player.setDirectionAndMove("o");
       }
-
     });
-
-    // setTimeout(buildGameOverScreen, 3000);
-
   }
+
+
+
+
 
   function buildGameOverScreen(result) {
 
@@ -77,14 +73,14 @@ function main() {
       console.log(result);
       var gameOverScreen = `
       <section>
-      <h1>You win!</h1>
+      <h1>YOU WIN!</h1>
       <button id="play-again-button">PLAY AGAIN</button>
       </section>
       `;
     } else {
       var gameOverScreen = `
       <section>
-      <h1>Game over</h1>
+      <h1>GAME OVER</h1>
       <button id="play-again-button">PLAY AGAIN</button>
       </section>`;
     }
