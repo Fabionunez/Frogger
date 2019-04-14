@@ -3,6 +3,7 @@
 let Game = function (canvas) {
   this.player = null;
   this.obstacles = [];
+  this.floaters = [];
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   this.gameOver = false;
@@ -19,6 +20,7 @@ Game.prototype.startLoop = function () {
 
   this.player = new Player(this.canvas);
   this.createObstacles();
+  this.createFloaters();
 
   this.music = document.createElement("audio");
   this.music.src = ("./src/FroggerArcMainTrack.ogg");
@@ -57,6 +59,11 @@ Game.prototype.updateCanvas = function () {
   // Update positions obstacles
   this.obstacles.forEach(function (obstacle) {
     obstacle.update();
+  });
+
+  // Update positions logs
+  this.floaters.forEach(function (floater) {
+    floater.update();
   });
 
   // Update background image
@@ -105,12 +112,51 @@ Game.prototype.updateCanvas = function () {
 
 
 Game.prototype.drawCanvas = function () {
-  this.player.draw();
+
   this.obstacles.forEach(function (obstacle) {
     obstacle.draw();
   });
 
+  this.floaters.forEach(function (floater) {
+    floater.draw();
+  });
+
+  this.player.draw();
+
 }
+
+
+
+Game.prototype.createFloaters = function () {
+  //(canvas, speed, row, direction, width, x, y)
+  //this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 150, 0, 290));
+
+  for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
+    // (canvas, speed, row, direction, width, x, y)
+    this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 50, 0 - i, 290));
+  }
+
+  for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
+    // (canvas, speed, row, direction, width, x, y)
+    this.floaters.push(new Floaters(this.canvas, 1.5, 2, -1, 120, 0 + i, 240));
+  }
+
+  for (var i = 0; i < (this.canvas.width / 2) * 200; i += (this.canvas.width / 2)) {
+    // (canvas, speed, row, direction, width, x, y)
+    this.floaters.push(new Floaters(this.canvas, 5, 3, 1, 120, 0 - i, 190));
+  }
+
+  for (var i = 0; i < (this.canvas.width / 2.5) * 200; i += (this.canvas.width / 2.5)) {
+    // (canvas, speed, row, direction, width, x, y)
+    this.floaters.push(new Floaters(this.canvas, 6, 4, -1, 120, 0 + i, 140));
+  }
+}
+
+
+
+
+
+
 
 
 Game.prototype.createObstacles = function () {
@@ -137,11 +183,23 @@ Game.prototype.createObstacles = function () {
 
 
 
+Game.prototype.checkCollisionsCanvas = function () {
+
+  if (this.player.x > 550 || this.player.x < 0) {
+    this.loseLive();
+  }
+}
+
+
+
+
+
+
 
 Game.prototype.checkCollistions = function () {
 
   //check collision canvas
-  this.player.checkCollisionsCanvas();
+  this.checkCollisionsCanvas();
 
   //check collision obstacles
   this.obstacles.forEach((obstacle, index) => {
@@ -150,30 +208,42 @@ Game.prototype.checkCollistions = function () {
 
     if (isColliding) {
       this.loseLive();
-      if (this.player.lives === 0) {
-        this.gameOver = true;
-        this.buildGameOverScreen("losse");
-        this.music.src = "";
-      }
     }
 
   });
 
+  //check collision floaters and watter
+  this.floaters.forEach((floater, index) => {
+
+    const isCollidingFloater = this.player.checkCollisionsFloaters(floater);
+
+
+    if (isCollidingFloater) {
+      //console.log(index);
+      //console.log(this.player.checkCollisionsFloaters(floater));
+      if (floater.direction === 1) {
+        this.player.x += floater.speed;
+      } else {
+        this.player.x -= floater.speed;
+      }
+    } else if (!isCollidingFloater && this.player.y < 340) { // if it's in the watter
+      //this.loseLive();
+    }
+
+  });
+
+  //console.log(this.player.direction, this.player.x, this.player.y);
+
+
   //check the collision with arrival goal
-  if (this.player.y === 290) {
+  if (this.player.y === 0) {
     this.gameOver = true;
     this.buildGameOverScreen("win");
     this.music.src = "";
   }
+
 }
 
-
-
-
-
-Game.prototype.setGameOverCallback = function (buildGameOverScreen) {
-  this.buildGameOverScreen = buildGameOverScreen; // to access to the functions of other file
-}
 
 
 
@@ -181,7 +251,7 @@ Game.prototype.setGameOverCallback = function (buildGameOverScreen) {
 Game.prototype.loseLive = function () {
 
   this.player.setLives();
-  this.player.x = 30000;
+  this.player.x = 500;
   this.player.y = 30000;
 
   this.loseLiveSound = document.createElement("audio");
@@ -201,6 +271,15 @@ Game.prototype.loseLive = function () {
   if (this.player.lives === 0) {
     this.gameOver = true;
     this.buildGameOverScreen("losse");
+    this.music.src = ""
   }
 
+}
+
+
+
+
+
+Game.prototype.setGameOverCallback = function (buildGameOverScreen) {
+  this.buildGameOverScreen = buildGameOverScreen; // to access to the functions of other file
 }

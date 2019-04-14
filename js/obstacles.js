@@ -27,6 +27,7 @@ Obstacles.prototype.draw = function () {
     obstacleImage.src = "./img/obstacle4.png";
   }
   this.ctx.drawImage(obstacleImage, this.x, this.y, this.width, this.height);
+
 }
 
 

@@ -18,7 +18,7 @@ function main() {
   function buildSplashScreen() {
     let splashScreen = `
     <section>
-    <p><img src="./img/logo.png" width="522" height="53"/></p>
+    <p><img src="./img/logo.png" width="460" height="268"/></p>
     <button id="start-button">START GAME</button>
     </section>`;
     // console.log(splashScreen);
@@ -68,9 +68,7 @@ function main() {
 
   function buildGameOverScreen(result) {
 
-
     if (result === "win") {
-      console.log(result);
       var gameOverScreen = `
       <section>
       <h1>YOU WIN!</h1>
