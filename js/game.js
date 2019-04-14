@@ -52,6 +52,10 @@ Game.prototype.clearCanvas = function () {
 }
 
 
+// Game.prototype.bonusFly = function () {
+// }
+
+
 
 
 Game.prototype.updateCanvas = function () {
@@ -70,6 +74,13 @@ Game.prototype.updateCanvas = function () {
   var background = new Image();
   background.src = "./img/background.png";
   this.ctx.drawImage(background, 0, 2, 600, 696);
+
+
+  // How to display saved frogs
+  // var background = new Image();
+  // background.src = "./img/frog-saved.png";
+  // this.ctx.drawImage(background, 22, 92, 50, 50);
+
 
   // Upcate number of lives
   var lives = new Image();
@@ -127,27 +138,27 @@ Game.prototype.drawCanvas = function () {
 
 
 
-Game.prototype.createFloaters = function () {
-  //(canvas, speed, row, direction, width, x, y)
-  //this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 150, 0, 290));
 
+
+
+
+Game.prototype.createFloaters = function () {
+
+  // (canvas, speed, row, direction, width, x, y)
   for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
-    // (canvas, speed, row, direction, width, x, y)
-    this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 50, 0 - i, 290));
+
+    this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 120, 0 - i, 290));
   }
 
   for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
-    // (canvas, speed, row, direction, width, x, y)
     this.floaters.push(new Floaters(this.canvas, 1.5, 2, -1, 120, 0 + i, 240));
   }
 
   for (var i = 0; i < (this.canvas.width / 2) * 200; i += (this.canvas.width / 2)) {
-    // (canvas, speed, row, direction, width, x, y)
     this.floaters.push(new Floaters(this.canvas, 5, 3, 1, 120, 0 - i, 190));
   }
 
   for (var i = 0; i < (this.canvas.width / 2.5) * 200; i += (this.canvas.width / 2.5)) {
-    // (canvas, speed, row, direction, width, x, y)
     this.floaters.push(new Floaters(this.canvas, 6, 4, -1, 120, 0 + i, 140));
   }
 }
@@ -196,6 +207,7 @@ Game.prototype.checkCollisionsCanvas = function () {
 
 
 
+
 Game.prototype.checkCollistions = function () {
 
   //check collision canvas
@@ -213,23 +225,27 @@ Game.prototype.checkCollistions = function () {
   });
 
   //check collision floaters and watter
+
+
   this.floaters.forEach((floater, index) => {
 
     const isCollidingFloater = this.player.checkCollisionsFloaters(floater);
 
 
     if (isCollidingFloater) {
-      //console.log(index);
+
       //console.log(this.player.checkCollisionsFloaters(floater));
       if (floater.direction === 1) {
         this.player.x += floater.speed;
       } else {
         this.player.x -= floater.speed;
       }
-    } else if (!isCollidingFloater && this.player.y < 340) { // if it's in the watter
-      //this.loseLive();
-    }
 
+    } else if (this.player.y < 340) { // if it's in the watter
+
+      //this.loseLive();
+
+    }
   });
 
   //console.log(this.player.direction, this.player.x, this.player.y);

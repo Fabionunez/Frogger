@@ -94,11 +94,28 @@ Player.prototype.checkCollisionsObstacles = function (obstacle) {
 
 Player.prototype.checkCollisionsFloaters = function (floater) {
 
-  const collisionRightFloater = this.x + this.size / 2 > floater.x - floater.width / 2;
-  const collisionLeftFloater = this.x - this.size / 2 < floater.x + floater.width / 2;
-  const collisionTopFloater = this.y - this.size / 2 < floater.y + floater.height / 2;
-  const collisionBottomFloater = this.y + this.size / 2 > floater.y - floater.height / 2;
+  // const collisionRightFloater = this.x + this.size / 2 > floater.x - floater.width / 2;
+  // const collisionLeftFloater = this.x - this.size / 2 < floater.x + floater.width / 2;
+  // const collisionTopFloater = this.y - this.size / 2 < floater.y + floater.height / 2;
+  // const collisionBottomFloater = this.y + this.size / 2 > floater.y - floater.height / 2;
 
-  return collisionRightFloater && collisionLeftFloater && collisionTopFloater && collisionBottomFloater;
+  // return collisionRightFloater && collisionLeftFloater && collisionTopFloater && collisionBottomFloater;
+
+
+  //if ((A.x + A.width) >= (B.x) && (A.x) <= (B.x + B.width) && (A.y  +A.height) >= (B.y) && (A.y) <= (B.y + B.height))
+  //if ((this.x + this.size) > (floater.x) && (this.x) < (floater.x + floater.width) && (this.y + this.size) > (floater.y) && (this.y) < (floater.y + floater.height)) {
+
+  if ((this.x + this.size) > (floater.x) && (this.x) < (floater.x + floater.width) && (this.y + this.size) > (floater.y) && (this.y) < (floater.y + floater.height)) {
+
+
+    return true;
+
+
+  } else {
+
+    return false;
+  }
+
+
 
 }
