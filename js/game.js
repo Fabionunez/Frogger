@@ -11,6 +11,7 @@ let Game = function (canvas) {
   this.widthTime = 150;
   this.xTime = 345;
   this.music = "";
+  this.onTheFloater = false;
 
 }
 
@@ -34,6 +35,7 @@ Game.prototype.startLoop = function () {
     this.clearCanvas();
     this.updateCanvas();
     this.drawCanvas();
+    this.checkDrownFrog();
     this.checkCollistions();
 
     if (this.gameOver === false) {
@@ -145,7 +147,7 @@ Game.prototype.drawCanvas = function () {
 Game.prototype.createFloaters = function () {
 
   // (canvas, speed, row, direction, width, x, y)
-  for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
+  for (var i = 0; i < (this.canvas.width / 3) * 10; i += (this.canvas.width / 3)) {
 
     this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 120, 0 - i, 290));
   }
@@ -203,6 +205,15 @@ Game.prototype.checkCollisionsCanvas = function () {
 
 
 
+Game.prototype.checkDrownFrog = function () {
+  if (this.player.y < 340) {
+    if (this.checkOnFloat()) {
+      this.loseLive();
+    }
+  }
+
+}
+
 
 
 
@@ -212,6 +223,7 @@ Game.prototype.checkCollistions = function () {
 
   //check collision canvas
   this.checkCollisionsCanvas();
+
 
   //check collision obstacles
   this.obstacles.forEach((obstacle, index) => {
@@ -227,26 +239,30 @@ Game.prototype.checkCollistions = function () {
   //check collision floaters and watter
 
 
-  this.floaters.forEach((floater, index) => {
+  // document.addEventListener("keydown", () => {
 
-    const isCollidingFloater = this.player.checkCollisionsFloaters(floater);
+  //   this.onTheFloater = false; // reset if you where in any floater
 
+  //   if (this.player.y < 340) { // check if you are in the watter 
 
-    if (isCollidingFloater) {
+  //     if (!this.onTheFloater) { // if you aren't in a floater
 
-      //console.log(this.player.checkCollisionsFloaters(floater));
-      if (floater.direction === 1) {
-        this.player.x += floater.speed;
-      } else {
-        this.player.x -= floater.speed;
-      }
+  //       this.floaters.forEach((floater, index) => { // go floater by foater to find one collision
 
-    } else if (this.player.y < 340) { // if it's in the watter
+  //         const isCollidingFloater = this.player.checkCollisionsFloaters(floater); // return true if collide with a floater
 
-      //this.loseLive();
+  //         if (isCollidingFloater) {
+  //           this.onTheFloater = true;
+  //         }
+  //       });
 
-    }
-  });
+  //     } else {
+  //       this.goWithFloater(floater);
+  //       console.log("dead");
+  //     }
+  //   }
+  // });
+
 
   //console.log(this.player.direction, this.player.x, this.player.y);
 
@@ -262,6 +278,40 @@ Game.prototype.checkCollistions = function () {
 
 
 
+
+Game.prototype.goWithFloater = function (floater) {
+  if (floater.direction === 1) {
+    this.player.x += floater.speed;
+  } else {
+    this.player.x -= floater.speed;
+  }
+};
+
+
+
+
+Game.prototype.checkOnFloat = function () {
+
+  let deadFrog = true;
+
+  this.floaters.forEach((floater, index) => {
+
+    const isCollidingFloater = this.player.checkCollisionsFloaters(floater);
+
+    if (isCollidingFloater) {
+
+      this.goWithFloater(floater);
+
+      deadFrog = false;
+
+    }
+
+  });
+
+  console.log(deadFrog);
+
+  return deadFrog;
+}
 
 
 Game.prototype.loseLive = function () {

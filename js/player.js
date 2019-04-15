@@ -2,11 +2,12 @@ let Player = function (canvas) {
   this.lives = 3;
   this.size = 50;
   this.x = 300;
-  this.y = 340; //590
+  this.y = 340; //340
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   this.direction = "n";
   this.score = 0;
+
 }
 
 
@@ -104,6 +105,7 @@ Player.prototype.checkCollisionsFloaters = function (floater) {
 
   //if ((A.x + A.width) >= (B.x) && (A.x) <= (B.x + B.width) && (A.y  +A.height) >= (B.y) && (A.y) <= (B.y + B.height))
   //if ((this.x + this.size) > (floater.x) && (this.x) < (floater.x + floater.width) && (this.y + this.size) > (floater.y) && (this.y) < (floater.y + floater.height)) {
+  //https://www.youtube.com/watch?v=8b_reDI7iPM
 
   if ((this.x + this.size) > (floater.x) && (this.x) < (floater.x + floater.width) && (this.y + this.size) > (floater.y) && (this.y) < (floater.y + floater.height)) {
 
