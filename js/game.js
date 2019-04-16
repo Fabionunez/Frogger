@@ -56,6 +56,23 @@ Game.prototype.resetPayerPosition = function () {
   this.player.y = 590;
   this.player.score += 1000;
   //this.player.lives++;
+
+  this.player.x = 500;
+  this.player.y = 30000;
+
+  this.savedFrogSound = document.createElement("audio");
+  this.savedFrogSound.src = ("./src/sound-frogger-extra.wav");
+  this.savedFrogSound.play();
+  this.savedFrogSound.volume = 0.1;
+
+  this.widthTime = 150;
+  this.xTime = 345;
+  this.time = 2000;
+
+  setTimeout(() => {
+    this.player.x = 300;
+    this.player.y = 590;
+  }, 800)
 }
 
 Game.prototype.checkSavedFrogs = function () {
@@ -329,7 +346,7 @@ Game.prototype.checkCollistions = function () {
   //check the collision with arrival goal
   if (this.savedFrog1 && this.savedFrog2 && this.savedFrog3 && this.savedFrog4 && this.savedFrog5) {
     this.gameOver = true;
-    this.buildGameOverScreen("win");
+    this.buildGameOverScreen("win", this.player.score);
     this.music.src = "";
   }
 
@@ -395,7 +412,8 @@ Game.prototype.loseLive = function () {
 
   if (this.player.lives === 0) {
     this.gameOver = true;
-    this.buildGameOverScreen("losse");
+    console.log
+    this.buildGameOverScreen("losse", this.player.score);
     this.music.src = ""
   }
 

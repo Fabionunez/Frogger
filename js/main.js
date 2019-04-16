@@ -66,12 +66,13 @@ function main() {
 
 
 
-  function buildGameOverScreen(result) {
+  function buildGameOverScreen(result, score) {
 
     if (result === "win") {
       var gameOverScreen = `
       <section>
       <h1>YOU WIN!</h1>
+      <p>${score} POINTS</p>
       <button id="play-again-button">PLAY AGAIN</button>
       </section>
       `;
@@ -79,6 +80,7 @@ function main() {
       var gameOverScreen = `
       <section>
       <h1>GAME OVER</h1>
+      <p>${score} POINTS</p>
       <button id="play-again-button">PLAY AGAIN</button>
       </section>`;
     }
