@@ -118,6 +118,7 @@ Game.prototype.startLoop = function () {
     this.updateCanvas();
     this.drawCanvas();
     this.frogSaved();
+    //this.isPayerSafe()
     this.checkDrownFrog();
     this.checkCollistions();
 
@@ -271,7 +272,7 @@ Game.prototype.createObstacles = function () {
   }
 
   for (var i = 0; i < (this.canvas.width / 2) * 200; i += (this.canvas.width / 2)) {
-    this.obstacles.push(new Obstacles(this.canvas, 13, 4, 1, 37, 600 - i, 390));
+    this.obstacles.push(new Obstacles(this.canvas, 13, 4, 1, 37, 630 - i, 390));
   }
 }
 
@@ -287,18 +288,24 @@ Game.prototype.checkCollisionsCanvas = function () {
 }
 
 
+// Game.prototype.isPayerSafe = function () {
+//   if (this.player.y === 90) {
+//     return true;
+//   }
+//   return false;
+
+// }
 
 Game.prototype.checkDrownFrog = function () {
   console.log("checkDrownFrog y =", this.player.y);
+  //console.log(this.isPayerSafe());
   if (this.player.y < 340) {
-    if (this.player.y > 90) {
-      if (this.checkOnFloat()) {
-        console.log("hi");
-        this.loseLive();
-      }
+
+    if (this.checkOnFloat()) {
+      console.log("hi");
+      this.loseLive();
     }
   }
-
 }
 
 
