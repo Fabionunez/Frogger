@@ -22,47 +22,40 @@ let Game = function (canvas) {
 
 
 Game.prototype.frogSaved = function () {
-  console.log("frogSaved y = ", this.player.y);
+  //console.log("frogSaved y = ", this.player.y);
   if (this.player.y === 90) {
     if (this.player.x <= 84) {
       this.savedFrog1 = true;
-      this.player.x = 590;
-      this.player.y = 300;
-      this.player.lives++;
-      this.player.score += 1000;
+      this.resetPayerPosition();
       //console.log(this.player.y);
     } else if (this.player.x >= 138 && this.player.x <= 210) {
       this.savedFrog2 = true;;
-      this.player.x = 590;
-      this.player.y = 300;
-      this.player.lives++;
-      this.player.score += 1000;
+      this.resetPayerPosition();
 
     } else if (this.player.x >= 264 && this.player.x <= 337) {
       this.savedFrog3 = true;;
-      this.player.x = 590;
-      this.player.y = 300;
-      this.player.lives++;
-      this.player.score += 1000;
+      this.resetPayerPosition();
 
     } else if (this.player.x >= 391 && this.player.x <= 461) {
       this.savedFrog4 = true;;
-      this.player.x = 590;
-      this.player.y = 300;
-      this.player.lives++;
-      this.player.score += 1000;
+      this.resetPayerPosition();
 
     } else if (this.player.x >= 516 && this.player.x <= 600) {
       this.savedFrog5 = true;;
-      this.player.x = 590;
-      this.player.y = 300;
-      this.player.lives++;
-      this.player.score += 1000;
+      this.resetPayerPosition();
 
     } else {
       this.loseLive();
     }
   }
+}
+
+
+Game.prototype.resetPayerPosition = function () {
+  this.player.x = 300;
+  this.player.y = 590;
+  this.player.score += 1000;
+  //this.player.lives++;
 }
 
 Game.prototype.checkSavedFrogs = function () {
@@ -118,7 +111,6 @@ Game.prototype.startLoop = function () {
     this.updateCanvas();
     this.drawCanvas();
     this.frogSaved();
-    //this.isPayerSafe()
     this.checkDrownFrog();
     this.checkCollistions();
 
@@ -288,21 +280,24 @@ Game.prototype.checkCollisionsCanvas = function () {
 }
 
 
-// Game.prototype.isPayerSafe = function () {
-//   if (this.player.y === 90) {
-//     return true;
-//   }
-//   return false;
+Game.prototype.isPayerSafe = function () {
+  if (this.player.y === 90) {
+    return true;
+  }
+  return false;
 
-// }
+}
 
 Game.prototype.checkDrownFrog = function () {
-  console.log("checkDrownFrog y =", this.player.y);
-  //console.log(this.isPayerSafe());
-  if (this.player.y < 340) {
+  //console.log("checkDrownFrog y =", this.player.y);
 
-    if (this.checkOnFloat()) {
-      console.log("hi");
+  if (this.player.y < 340 && this.player.y >= 140) {
+
+    if (this.checkOnFloat() && this.player.y !== 90) {
+      // console.log("hi");
+      // console.log(this.isPayerSafe());
+      // console.log(this.player.y);
+      // debugger;
       this.loseLive();
     }
   }
@@ -372,14 +367,14 @@ Game.prototype.checkOnFloat = function () {
 
   });
 
-  console.log("deadFrog", deadFrog);
+  //console.log("deadFrog", deadFrog);
 
   return deadFrog;
 }
 
 
 Game.prototype.loseLive = function () {
-  //debugger;
+
   this.player.setLives();
   this.player.x = 500;
   this.player.y = 30000;
