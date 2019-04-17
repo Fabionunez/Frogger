@@ -79,24 +79,20 @@ Game.prototype.frogSaved = function () {
 
 
 Game.prototype.resetPayerPosition = function () {
-  this.player.score += 1000;
-  this.player.x = 500;
-  this.player.y = 30000;
-  this.music.src = (""); // mute the background song
-
+  this.player.setScore(1000); // add 1000 points 
+  this.player.x = 300;
+  this.player.y = 30000; // send the player outside the game
+  this.music.pause(); // pause the background song
   this.savedFrogSound.play();
 
-  setTimeout(() => {
-    this.player.x = 300;
+  setTimeout(() => { // reset the position after a 
+
     this.player.y = 590;
   }, 800)
 
   if (this.gameOver === false) {
     setTimeout(() => {
-      this.music.src = ("./src/FroggerArcMainTrack.ogg");
       this.music.play();
-      this.music.volume = 0.07;
-      this.music.loop = true;
     }, 2800)
   }
   this.widthTime = 150;
