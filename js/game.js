@@ -36,8 +36,7 @@ let Game = function (canvas) {
   this.savedFrogSound.volume = 0.1;
 
 
-  // this.randomBonus = 13;
-  // this.bonusFixed = false;
+  // Bonus
   this.bonusTime = Date.now();
   this.timeBetweenBonus = 3000;
   this.bonusXPosition = null;
@@ -477,7 +476,7 @@ Game.prototype.removeBonus = function () {
 }
 
 Game.prototype.checkWinBonus = function () {
-  if (this.bonusXPosition * 50 === this.player.x && this.player.y === 340) {
+  if ((this.bonusXPosition * 50 === this.player.x && this.player.y === 340) && this.player.x !== 0) {
     this.bonusTime = Date.now();
     this.bonusXPosition = null;
     this.player.setScore(200);

@@ -24,8 +24,22 @@ function main() {
     buildDom(splashScreen);
 
     const startButton = document.getElementById("start-button")
+    startButton.addEventListener("click", buildIntroScreen);
+  }
+
+  function buildIntroScreen() {
+    let helpScreen = `
+    <section>
+    <p><img src="./img/help.png" width="559" height="495"/></p>
+    <button id="start-button">LET'S DO IT!</button>
+    </section>`;
+
+    buildDom(helpScreen);
+
+    const startButton = document.getElementById("start-button")
     startButton.addEventListener("click", buildGameScreen);
   }
+
 
 
 
