@@ -17,10 +17,18 @@ let Game = function (canvas) {
   this.savedFrog3 = false;
   this.savedFrog4 = false;
   this.savedFrog5 = false;
+  //Images
+  this.savedFrogImage = new Image();
+  this.savedFrogImage.src = "./img/frog-saved.png";
+  //Sounds
   this.music = document.createElement("audio");
   this.music.src = ("./src/FroggerArcMainTrack.ogg");
   this.music.volume = 0.07;
   this.music.loop = true;
+  this.savedFrogSound = document.createElement("audio");
+  this.savedFrogSound.src = ("./src/sound-frogger-extra.wav");
+  this.savedFrogSound.volume = 0.1;
+
 }
 
 
@@ -74,12 +82,9 @@ Game.prototype.resetPayerPosition = function () {
   this.player.score += 1000;
   this.player.x = 500;
   this.player.y = 30000;
+  this.music.src = (""); // mute the background song
 
-  this.music.src = ("");
-  this.savedFrogSound = document.createElement("audio");
-  this.savedFrogSound.src = ("./src/sound-frogger-extra.wav");
   this.savedFrogSound.play();
-  this.savedFrogSound.volume = 0.1;
 
   setTimeout(() => {
     this.player.x = 300;
@@ -101,31 +106,20 @@ Game.prototype.resetPayerPosition = function () {
 
 
 Game.prototype.checkSavedFrogs = function () {
-
   if (this.savedFrog1) {
-    var savedFrog1Image = new Image();
-    savedFrog1Image.src = "./img/frog-saved.png";
-    this.ctx.drawImage(savedFrog1Image, 22, 92, 50, 50);
+    this.ctx.drawImage(this.savedFrogImage, 22, 92, 50, 50);
   }
   if (this.savedFrog2) {
-    var savedFrog2Image = new Image();
-    savedFrog2Image.src = "./img/frog-saved.png";
-    this.ctx.drawImage(savedFrog2Image, 150, 92, 50, 50);
+    this.ctx.drawImage(this.savedFrogImage, 150, 92, 50, 50);
   }
   if (this.savedFrog3) {
-    var savedFrog3Image = new Image();
-    savedFrog3Image.src = "./img/frog-saved.png";
-    this.ctx.drawImage(savedFrog3Image, 275, 92, 50, 50);
+    this.ctx.drawImage(this.savedFrogImage, 275, 92, 50, 50);
   }
   if (this.savedFrog4) {
-    var savedFrog4Image = new Image();
-    savedFrog4Image.src = "./img/frog-saved.png";
-    this.ctx.drawImage(savedFrog4Image, 401, 92, 50, 50);
+    this.ctx.drawImage(this.savedFrogImage, 401, 92, 50, 50);
   }
   if (this.savedFrog5) {
-    var savedFrog5Image = new Image();
-    savedFrog5Image.src = "./img/frog-saved.png";
-    this.ctx.drawImage(savedFrog5Image, 528, 92, 50, 50);
+    this.ctx.drawImage(this.savedFrogImage, 528, 92, 50, 50);
   }
 }
 
@@ -140,7 +134,6 @@ Game.prototype.startLoop = function () {
   this.createFloaters();
 
   this.music.play();
-
 
   const loop = () => {
 
