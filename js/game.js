@@ -39,7 +39,7 @@ let Game = function (canvas) {
   // this.randomBonus = 13;
   // this.bonusFixed = false;
   this.bonusTime = Date.now();
-  this.timeBetweenBonus = 4000;
+  this.timeBetweenBonus = 3000;
   this.bonusXPosition = null;
 
 }
@@ -445,18 +445,12 @@ Game.prototype.setGameOverCallback = function (buildGameOverScreen) {
 
 
 
-// if (this.checkIfBonus()) {
-//   this.printBonus(this.bonusXPosition);
-// }
-// if (this.checkIfRemoveBonus()) {
-//   this.removeBonus();
-// }
 
 Game.prototype.checkIfBonus = function () {
   if (Date.now() > this.bonusTime + this.timeBetweenBonus) {
     //this.bonusTime = Date.now();
     if (this.bonusXPosition === null) {
-      this.bonusXPosition = Math.floor(Math.random() * 13); // 50px blocks
+      this.bonusXPosition = Math.floor(Math.random() * 12) + 1; // 50px blocks
     }
     return true;
   }
@@ -474,16 +468,16 @@ Game.prototype.checkIfRemoveBonus = function () {
 
 
 Game.prototype.printBonus = function (position) {
+
   this.ctx.drawImage(this.bonnusFly, 50 * position, 340, 50, 50);
 }
 
 Game.prototype.removeBonus = function () {
   this.ctx.drawImage(this.bonnusFly, 50, 9000, 50, 50);
-  // not working
 }
 
 Game.prototype.checkWinBonus = function () {
-  if (this.bonusXPosition * 50 === this.player.x) {
+  if (this.bonusXPosition * 50 === this.player.x && this.player.y === 340) {
     this.bonusTime = Date.now();
     this.bonusXPosition = null;
     this.player.setScore(200);
