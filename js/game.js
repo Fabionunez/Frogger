@@ -48,13 +48,14 @@ Game.prototype.startLoop = function () { //Loop with requestAnimationFrame
   const loop = () => {
 
     this.time--;
-    this.clearCanvas();
-    this.updateCanvas();
-    this.drawCanvas();
-    this.checkSavedFrogs();
-    this.frogSaved();
-    this.checkDrownFrog();
-    this.checkCollistions();
+    this.clearCanvas(); // clear everything in each frame
+    this.updateCanvas(); // repaint everything in each frame
+    this.drawCanvas(); // draw the initial player and obstacles
+    this.checkSavedFrogs(); // Check if you save frogs and print the happy frog images in their place
+    this.frogSaved(); // Check if the player is in the positions to save a frog
+    this.checkDrownFrog(); // If the player is in the water area and not in a log, he loses a live
+    this.checkCollistions(); //canvas and obstacles
+    this.gameWon(); // check if you saved all frogs and send you to the win page
 
     if (this.gameOver === false) {
       window.requestAnimationFrame(loop);
@@ -319,7 +320,7 @@ Game.prototype.checkDrownFrog = function () { // If the player is in the water a
 
 
 
-Game.prototype.checkCollistions = function () {
+Game.prototype.checkCollistions = function () { //check collisions with canvas and obstacles
 
   //check collision canvas
   this.checkCollisionsCanvas();
@@ -335,14 +336,6 @@ Game.prototype.checkCollistions = function () {
     }
 
   });
-
-
-  //check the collision with arrival goal
-  if (this.savedFrog1 && this.savedFrog2 && this.savedFrog3 && this.savedFrog4 && this.savedFrog5) {
-    this.gameOver = true;
-    this.buildGameOverScreen("win", this.player.score);
-    this.music.src = "";
-  }
 }
 
 
@@ -406,7 +399,13 @@ Game.prototype.loseLive = function () { // Lose a live and reset the live. If yo
 
 }
 
-
+Game.prototype.gameWon = function () {
+  if (this.savedFrog1 && this.savedFrog2 && this.savedFrog3 && this.savedFrog4 && this.savedFrog5) {
+    this.gameOver = true;
+    this.buildGameOverScreen("win", this.player.score);
+    this.music.src = "";
+  }
+}
 
 
 

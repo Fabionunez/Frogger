@@ -12,7 +12,7 @@ let Obstacles = function (canvas, speed, row, direction, width, x, y) {
 
 
 
-Obstacles.prototype.draw = function () {
+Obstacles.prototype.draw = function () { // Create diferent images for each row of cars
   if (this.row === 1) {
     var obstacleImage = new Image();
     obstacleImage.src = "./img/obstacle1.png";

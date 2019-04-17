@@ -8,19 +8,14 @@ let Floaters = function (canvas, speed, row, direction, width, x, y) {
   this.direction = direction;
   this.x = x;
   this.y = y;
+  this.floaterImage = new Image();
+  this.floaterImage.src = "./img/floater1.png";
 }
 
 
 
 Floaters.prototype.draw = function () {
-  // this.ctx.fillStyle = "grey";
-  // this.ctx.fillRect(this.x, this.y, this.width, this.height);
-
-  var floaterImage = new Image();
-  floaterImage.src = "./img/floater1.png";
-  this.ctx.drawImage(floaterImage, this.x, this.y, this.width, this.height);
-
-
+  this.ctx.drawImage(this.floaterImage, this.x, this.y, this.width, this.height);
 }
 
 
