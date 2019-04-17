@@ -20,6 +20,10 @@ let Game = function (canvas) {
   //Images
   this.savedFrogImage = new Image();
   this.savedFrogImage.src = "./img/frog-saved.png";
+  this.background = new Image();
+  this.background.src = "./img/background.png";
+  this.lives = new Image();
+  this.lives.src = "./img/frog.png";
   //Sounds
   this.music = document.createElement("audio");
   this.music.src = ("./src/FroggerArcMainTrack.ogg");
@@ -28,6 +32,97 @@ let Game = function (canvas) {
   this.savedFrogSound = document.createElement("audio");
   this.savedFrogSound.src = ("./src/sound-frogger-extra.wav");
   this.savedFrogSound.volume = 0.1;
+
+}
+
+
+Game.prototype.startLoop = function () { //Loop with requestAnimationFrame
+
+  // Create objects: Player, cars and floaters
+  this.player = new Player(this.canvas);
+  this.createObstacles();
+  this.createFloaters();
+
+  this.music.play();
+
+  const loop = () => {
+
+    this.time--;
+    this.clearCanvas();
+    this.updateCanvas();
+    this.drawCanvas();
+    this.checkSavedFrogs();
+    this.frogSaved();
+    this.checkDrownFrog();
+    this.checkCollistions();
+
+    if (this.gameOver === false) {
+      window.requestAnimationFrame(loop);
+    }
+  }
+  window.requestAnimationFrame(loop);
+}
+
+
+
+
+Game.prototype.clearCanvas = function () { // clean the canvas to repaint it every frame
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
+
+
+Game.prototype.printLives = function () {
+  if (this.player.lives === 3) {
+    this.ctx.drawImage(this.lives, 5, 655, 25, 25);
+    this.ctx.drawImage(this.lives, 35, 655, 25, 25);
+    this.ctx.drawImage(this.lives, 65, 655, 25, 25)
+  } else if (this.player.lives === 2) {
+    this.ctx.drawImage(this.lives, 5, 655, 25, 25);
+    this.ctx.drawImage(this.lives, 35, 655, 25, 25);
+  } else {
+    this.ctx.drawImage(this.lives, 5, 655, 25, 25);
+  }
+}
+
+
+Game.prototype.updateCanvas = function () {
+
+  // Update positions obstacles
+  this.obstacles.forEach(function (obstacle) {
+    obstacle.update();
+  });
+
+  // Update positions logs
+  this.floaters.forEach(function (floater) {
+    floater.update();
+  });
+
+  // Update background image
+  this.ctx.drawImage(this.background, 0, 2, 600, 696);
+
+
+  // Update number of lives
+
+  this.printLives();
+
+
+  // Update score points
+  this.ctx.fillStyle = "white";
+  this.ctx.font = "20px 'Press Start 2P'";
+  this.ctx.fillText("SCORE: " + this.player.score, 25, 38);
+
+  // Update timer
+  this.ctx.fillStyle = "#FFFF03";
+  this.ctx.font = "20px 'Press Start 2P'";
+  this.ctx.fillText("TIME", 500, 680);
+
+  if (this.time < 0) this.loseLive();
+
+  this.ctx.fillStyle = "#21DF01";
+  this.widthTime = this.widthTime - (this.widthTime / this.time);
+  this.xTime = this.xTime + (this.widthTime / this.time);
+
+  this.ctx.fillRect(this.xTime, 660, this.widthTime, 18);
 
 }
 
@@ -78,27 +173,31 @@ Game.prototype.frogSaved = function () {
 
 
 
+
 Game.prototype.resetPayerPosition = function () {
-  this.player.setScore(1000); // add 1000 points 
-  this.player.x = 300;
+  this.player.setScore(1000); // add 1000 points
+
+  //reset the time bar initial status
+  this.widthTime = 150;
+  this.xTime = 345;
+  this.time = 500;
+
+  this.player.x = 300; // reset the initial position of the player
   this.player.y = 30000; // send the player outside the game
   this.music.pause(); // pause the background song
   this.savedFrogSound.play();
 
-  setTimeout(() => { // reset the position after a 
-
+  setTimeout(() => { // reset the position after a while
     this.player.y = 590;
   }, 800)
 
-  if (this.gameOver === false) {
+  if (this.gameOver === false) { //resume the background music after the savedFrogSound ends
     setTimeout(() => {
       this.music.play();
     }, 2800)
   }
-  this.widthTime = 150;
-  this.xTime = 345;
-  this.time = 500;
 }
+
 
 
 Game.prototype.checkSavedFrogs = function () {
@@ -122,95 +221,8 @@ Game.prototype.checkSavedFrogs = function () {
 
 
 
-Game.prototype.startLoop = function () {
-
-  // Create objects: Player, cars and floaters
-  this.player = new Player(this.canvas);
-  this.createObstacles();
-  this.createFloaters();
-
-  this.music.play();
-
-  const loop = () => {
-
-    this.time--;
-    this.clearCanvas();
-    this.updateCanvas();
-    this.drawCanvas();
-    this.frogSaved();
-    this.checkDrownFrog();
-    this.checkCollistions();
-
-    if (this.gameOver === false) {
-      window.requestAnimationFrame(loop);
-    }
-
-  }
-  window.requestAnimationFrame(loop);
-}
 
 
-
-
-Game.prototype.clearCanvas = function () {
-  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-}
-
-
-
-Game.prototype.updateCanvas = function () {
-
-  // Update positions obstacles
-  this.obstacles.forEach(function (obstacle) {
-    obstacle.update();
-  });
-
-  // Update positions logs
-  this.floaters.forEach(function (floater) {
-    floater.update();
-  });
-
-  // Update background image
-  var background = new Image();
-  background.src = "./img/background.png";
-  this.ctx.drawImage(background, 0, 2, 600, 696);
-
-  this.checkSavedFrogs();
-
-  // Upcate number of lives
-  var lives = new Image();
-  lives.src = "./img/frog.png";
-
-  if (this.player.lives === 3) {
-    this.ctx.drawImage(lives, 5, 655, 25, 25);
-    this.ctx.drawImage(lives, 35, 655, 25, 25);
-    this.ctx.drawImage(lives, 65, 655, 25, 25)
-  } else if (this.player.lives === 2) {
-    this.ctx.drawImage(lives, 5, 655, 25, 25);
-    this.ctx.drawImage(lives, 35, 655, 25, 25);
-  } else {
-    this.ctx.drawImage(lives, 5, 655, 25, 25);
-  }
-
-  // Update score points
-  this.ctx.fillStyle = "white";
-  this.ctx.font = "20px 'Press Start 2P'";
-  this.ctx.fillText("SCORE: " + this.player.score, 25, 38);
-
-  // Update timer
-  this.ctx.fillStyle = "#FFFF03";
-  this.ctx.font = "20px 'Press Start 2P'";
-  this.ctx.fillText("TIME", 500, 680);
-
-  if (this.time < 0) this.loseLive();
-
-  this.ctx.fillStyle = "#21DF01";
-  this.widthTime = this.widthTime - (this.widthTime / this.time);
-  this.xTime = this.xTime + (this.widthTime / this.time);
-
-  this.ctx.fillRect(this.xTime, 660, this.widthTime, 18);
-
-}
 
 
 
