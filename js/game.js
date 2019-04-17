@@ -7,7 +7,7 @@ let Game = function (canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   this.gameOver = false;
-  this.time = 2000;
+  this.time = 500;
   this.widthTime = 150;
   this.xTime = 345;
   this.music = "";
@@ -17,33 +17,50 @@ let Game = function (canvas) {
   this.savedFrog3 = false;
   this.savedFrog4 = false;
   this.savedFrog5 = false;
-
+  this.music = document.createElement("audio");
+  this.music.src = ("./src/FroggerArcMainTrack.ogg");
+  this.music.volume = 0.07;
+  this.music.loop = true;
 }
 
 
 Game.prototype.frogSaved = function () {
-  //console.log("frogSaved y = ", this.player.y);
   if (this.player.y === 90) {
     if (this.player.x <= 84) {
-      this.savedFrog1 = true;
-      this.resetPayerPosition();
-      //console.log(this.player.y);
+      if (this.savedFrog1) {
+        this.loseLive();
+      } else {
+        this.savedFrog1 = true;
+        this.resetPayerPosition();
+      }
     } else if (this.player.x >= 138 && this.player.x <= 210) {
-      this.savedFrog2 = true;;
-      this.resetPayerPosition();
-
+      if (this.savedFrog2) {
+        this.loseLive();
+      } else {
+        this.savedFrog2 = true;
+        this.resetPayerPosition();
+      }
     } else if (this.player.x >= 264 && this.player.x <= 337) {
-      this.savedFrog3 = true;;
-      this.resetPayerPosition();
-
+      if (this.savedFrog3) {
+        this.loseLive();
+      } else {
+        this.savedFrog3 = true;
+        this.resetPayerPosition();
+      }
     } else if (this.player.x >= 391 && this.player.x <= 461) {
-      this.savedFrog4 = true;;
-      this.resetPayerPosition();
-
+      if (this.savedFrog4) {
+        this.loseLive();
+      } else {
+        this.savedFrog4 = true;
+        this.resetPayerPosition();
+      }
     } else if (this.player.x >= 516 && this.player.x <= 600) {
-      this.savedFrog5 = true;;
-      this.resetPayerPosition();
-
+      if (this.savedFrog5) {
+        this.loseLive();
+      } else {
+        this.savedFrog5 = true;
+        this.resetPayerPosition();
+      }
     } else {
       this.loseLive();
     }
@@ -51,29 +68,37 @@ Game.prototype.frogSaved = function () {
 }
 
 
-Game.prototype.resetPayerPosition = function () {
-  this.player.x = 300;
-  this.player.y = 590;
-  this.player.score += 1000;
-  //this.player.lives++;
 
+
+Game.prototype.resetPayerPosition = function () {
+  this.player.score += 1000;
   this.player.x = 500;
   this.player.y = 30000;
 
+  this.music.src = ("");
   this.savedFrogSound = document.createElement("audio");
   this.savedFrogSound.src = ("./src/sound-frogger-extra.wav");
   this.savedFrogSound.play();
   this.savedFrogSound.volume = 0.1;
 
-  this.widthTime = 150;
-  this.xTime = 345;
-  this.time = 2000;
-
   setTimeout(() => {
     this.player.x = 300;
     this.player.y = 590;
   }, 800)
+
+  if (this.gameOver === false) {
+    setTimeout(() => {
+      this.music.src = ("./src/FroggerArcMainTrack.ogg");
+      this.music.play();
+      this.music.volume = 0.07;
+      this.music.loop = true;
+    }, 2800)
+  }
+  this.widthTime = 150;
+  this.xTime = 345;
+  this.time = 500;
 }
+
 
 Game.prototype.checkSavedFrogs = function () {
 
@@ -102,24 +127,20 @@ Game.prototype.checkSavedFrogs = function () {
     savedFrog5Image.src = "./img/frog-saved.png";
     this.ctx.drawImage(savedFrog5Image, 528, 92, 50, 50);
   }
-
 }
-
 
 
 
 
 Game.prototype.startLoop = function () {
 
+  // Create objects: Player, cars and floaters
   this.player = new Player(this.canvas);
   this.createObstacles();
   this.createFloaters();
 
-  this.music = document.createElement("audio");
-  this.music.src = ("./src/FroggerArcMainTrack.ogg");
   this.music.play();
-  this.music.volume = 0.07;
-  this.music.loop = true;
+
 
   const loop = () => {
 
@@ -130,8 +151,6 @@ Game.prototype.startLoop = function () {
     this.frogSaved();
     this.checkDrownFrog();
     this.checkCollistions();
-
-
 
     if (this.gameOver === false) {
       window.requestAnimationFrame(loop);
@@ -147,11 +166,6 @@ Game.prototype.startLoop = function () {
 Game.prototype.clearCanvas = function () {
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 }
-
-
-// Game.prototype.bonusFly = function () {
-// }
-
 
 
 
@@ -172,9 +186,7 @@ Game.prototype.updateCanvas = function () {
   background.src = "./img/background.png";
   this.ctx.drawImage(background, 0, 2, 600, 696);
 
-
   this.checkSavedFrogs();
-
 
   // Upcate number of lives
   var lives = new Image();
@@ -214,18 +226,19 @@ Game.prototype.updateCanvas = function () {
 
 
 
-
-
 Game.prototype.drawCanvas = function () {
 
+  // Draw obstacles
   this.obstacles.forEach(function (obstacle) {
     obstacle.draw();
   });
 
+  // Draw floaters
   this.floaters.forEach(function (floater) {
     floater.draw();
   });
 
+  // Draw player
   this.player.draw();
 
 }
@@ -240,7 +253,6 @@ Game.prototype.createFloaters = function () {
 
   // (canvas, speed, row, direction, width, x, y)
   for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
-
     this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 120, 0 - i, 290));
   }
 
@@ -297,24 +309,9 @@ Game.prototype.checkCollisionsCanvas = function () {
 }
 
 
-Game.prototype.isPayerSafe = function () {
-  if (this.player.y === 90) {
-    return true;
-  }
-  return false;
-
-}
-
 Game.prototype.checkDrownFrog = function () {
-  //console.log("checkDrownFrog y =", this.player.y);
-
   if (this.player.y < 340 && this.player.y >= 140) {
-
     if (this.checkOnFloat() && this.player.y !== 90) {
-      // console.log("hi");
-      // console.log(this.isPayerSafe());
-      // console.log(this.player.y);
-      // debugger;
       this.loseLive();
     }
   }
@@ -334,7 +331,7 @@ Game.prototype.checkCollistions = function () {
   //check collision obstacles
   this.obstacles.forEach((obstacle, index) => {
 
-    const isColliding = this.player.checkCollisionsObstacles(obstacle);
+    const isColliding = this.player.checkCollisions(obstacle);
 
     if (isColliding) {
       this.loseLive();
@@ -346,8 +343,11 @@ Game.prototype.checkCollistions = function () {
   //check the collision with arrival goal
   if (this.savedFrog1 && this.savedFrog2 && this.savedFrog3 && this.savedFrog4 && this.savedFrog5) {
     this.gameOver = true;
+
+
     this.buildGameOverScreen("win", this.player.score);
     this.music.src = "";
+
   }
 
 }
@@ -372,19 +372,13 @@ Game.prototype.checkOnFloat = function () {
 
   this.floaters.forEach((floater, index) => {
 
-    const isCollidingFloater = this.player.checkCollisionsFloaters(floater);
+    const isCollidingFloater = this.player.checkCollisions(floater);
 
     if (isCollidingFloater) {
-
       this.goWithFloater(floater);
-
       deadFrog = false;
-
     }
-
   });
-
-  //console.log("deadFrog", deadFrog);
 
   return deadFrog;
 }
@@ -403,7 +397,7 @@ Game.prototype.loseLive = function () {
 
   this.widthTime = 150;
   this.xTime = 345;
-  this.time = 2000;
+  this.time = 1000;
 
   setTimeout(() => {
     this.player.x = 300;

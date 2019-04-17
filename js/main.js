@@ -14,20 +14,18 @@ function main() {
 
 
 
-
   function buildSplashScreen() {
     let splashScreen = `
     <section>
     <p><img src="./img/logo.png" width="460" height="268"/></p>
     <button id="start-button">START GAME</button>
     </section>`;
-    // console.log(splashScreen);
+
     buildDom(splashScreen);
 
     const startButton = document.getElementById("start-button")
     startButton.addEventListener("click", buildGameScreen);
   }
-
 
 
 
@@ -47,7 +45,6 @@ function main() {
     var game = new Game(canvasElement);
     game.startLoop();
     game.setGameOverCallback(buildGameOverScreen);
-
 
     document.addEventListener("keydown", function () {
       if (event.keyCode === 38) {
@@ -91,23 +88,8 @@ function main() {
     playAgainButton.addEventListener("click", buildGameScreen);
   }
 
-  function buildWinScreen() {
-    let WinScreen = `
-    <section>
-    <h1>You win!</h1>
-    <button id="play-again-button2">Play again</button>
-    </section>
-    `;
 
-    buildDom(WinScreen);
-
-    const playAgainButton2 = document.getElementById("play-again-button2");
-
-    playAgainButton2.addEventListener("click", buildGameScreen);
-  }
-
-
-  buildSplashScreen();
+  buildSplashScreen(); // Build SplashScreen on load
 }
 
 

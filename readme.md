@@ -29,17 +29,20 @@ game.js
 Game(){
 this.player
 this.obstacles
+this.floaters
 this.canvas
-this.ctx
-this.gameOver
-}
-Game.prototype.startLoop()
-Game.prototype.cleanCanvas()
-Game.prototype.updateCanvas()
-Game.prototype.drawCanvas()
-Game.prototype.createObstacles()
-Game.prototype.checkCollistions()
-Game.prototype.setGameOverCallback()
+this.ctx = this.canvas.getContext("2d");
+this.gameOver = false;
+this.time = 500;
+this.widthTime = 150;
+this.xTime = 345;
+this.music = "";
+this.onTheFloater = false;
+this.savedFrog1 = false;
+this.savedFrog2 = false;
+this.savedFrog3 = false;
+this.savedFrog4 = false;
+this.savedFrog5 = false;
 ```
 
 Obstacles(){
