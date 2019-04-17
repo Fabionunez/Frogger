@@ -65,13 +65,35 @@ Game.prototype.startLoop = function () { //Loop with requestAnimationFrame
 
 
 
-
 Game.prototype.clearCanvas = function () { // clean the canvas to repaint it every frame
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 }
 
 
-Game.prototype.printLives = function () {
+
+Game.prototype.updateCanvas = function () {
+
+  this.obstacles.forEach(function (obstacle) { // Update positions obstacles
+    obstacle.update();
+  });
+
+  this.floaters.forEach(function (floater) { // Update positions logs
+    floater.update();
+  });
+
+  this.ctx.drawImage(this.background, 0, 2, 600, 696); // Update background image
+
+  this.printLives(); // Update number of lives
+
+  this.printScore(); // Update score points
+
+  this.timer(); // Update timer and lose live if the time ends
+
+}
+
+
+
+Game.prototype.printLives = function () { // check how many lives you have and print the icons
   if (this.player.lives === 3) {
     this.ctx.drawImage(this.lives, 5, 655, 25, 25);
     this.ctx.drawImage(this.lives, 35, 655, 25, 25);
@@ -85,33 +107,16 @@ Game.prototype.printLives = function () {
 }
 
 
-Game.prototype.updateCanvas = function () {
 
-  // Update positions obstacles
-  this.obstacles.forEach(function (obstacle) {
-    obstacle.update();
-  });
-
-  // Update positions logs
-  this.floaters.forEach(function (floater) {
-    floater.update();
-  });
-
-  // Update background image
-  this.ctx.drawImage(this.background, 0, 2, 600, 696);
-
-
-  // Update number of lives
-
-  this.printLives();
-
-
-  // Update score points
+Game.prototype.printScore = function () {
   this.ctx.fillStyle = "white";
   this.ctx.font = "20px 'Press Start 2P'";
   this.ctx.fillText("SCORE: " + this.player.score, 25, 38);
+}
 
-  // Update timer
+
+
+Game.prototype.timer = function () {
   this.ctx.fillStyle = "#FFFF03";
   this.ctx.font = "20px 'Press Start 2P'";
   this.ctx.fillText("TIME", 500, 680);
@@ -123,11 +128,12 @@ Game.prototype.updateCanvas = function () {
   this.xTime = this.xTime + (this.widthTime / this.time);
 
   this.ctx.fillRect(this.xTime, 660, this.widthTime, 18);
-
 }
 
 
-Game.prototype.frogSaved = function () {
+
+
+Game.prototype.frogSaved = function () { // Check if the player is in the save positions. If not lose a live
   if (this.player.y === 90) {
     if (this.player.x <= 84) {
       if (this.savedFrog1) {
@@ -174,7 +180,7 @@ Game.prototype.frogSaved = function () {
 
 
 
-Game.prototype.resetPayerPosition = function () {
+Game.prototype.resetPayerPosition = function () { // Reset player position after saving a frog
   this.player.setScore(1000); // add 1000 points
 
   //reset the time bar initial status
@@ -200,7 +206,7 @@ Game.prototype.resetPayerPosition = function () {
 
 
 
-Game.prototype.checkSavedFrogs = function () {
+Game.prototype.checkSavedFrogs = function () { // Check if you save frogs and print the image
   if (this.savedFrog1) {
     this.ctx.drawImage(this.savedFrogImage, 22, 92, 50, 50);
   }
@@ -223,11 +229,7 @@ Game.prototype.checkSavedFrogs = function () {
 
 
 
-
-
-
-
-Game.prototype.drawCanvas = function () {
+Game.prototype.drawCanvas = function () { // Draw initial elements
 
   // Draw obstacles
   this.obstacles.forEach(function (obstacle) {
@@ -275,8 +277,6 @@ Game.prototype.createFloaters = function () {
 
 
 
-
-
 Game.prototype.createObstacles = function () {
 
   // Canvas width divided by the number of obstacles and multiply for 200 (number of elements necesaries to keep up three lives)
@@ -301,24 +301,20 @@ Game.prototype.createObstacles = function () {
 
 
 
-Game.prototype.checkCollisionsCanvas = function () {
-
+Game.prototype.checkCollisionsCanvas = function () { // If the player collides with the sides, he loses a live
   if (this.player.x > 550 || this.player.x < 0) {
     this.loseLive();
   }
-
 }
 
 
-Game.prototype.checkDrownFrog = function () {
+Game.prototype.checkDrownFrog = function () { // If the player is in the water and not in a log, he loses a live
   if (this.player.y < 340 && this.player.y >= 140) {
     if (this.checkOnFloat() && this.player.y !== 90) {
       this.loseLive();
     }
   }
 }
-
-
 
 
 
@@ -344,19 +340,15 @@ Game.prototype.checkCollistions = function () {
   //check the collision with arrival goal
   if (this.savedFrog1 && this.savedFrog2 && this.savedFrog3 && this.savedFrog4 && this.savedFrog5) {
     this.gameOver = true;
-
-
     this.buildGameOverScreen("win", this.player.score);
     this.music.src = "";
-
   }
-
 }
 
 
 
 
-Game.prototype.goWithFloater = function (floater) {
+Game.prototype.goWithFloater = function (floater) { // If the player is on a log, he moves with it
   if (floater.direction === 1) {
     this.player.x += floater.speed;
   } else {
@@ -367,7 +359,7 @@ Game.prototype.goWithFloater = function (floater) {
 
 
 
-Game.prototype.checkOnFloat = function () {
+Game.prototype.checkOnFloat = function () { // Check if the player is on a log
 
   let deadFrog = true;
 
@@ -385,7 +377,7 @@ Game.prototype.checkOnFloat = function () {
 }
 
 
-Game.prototype.loseLive = function () {
+Game.prototype.loseLive = function () { // Lose a live and reset the live. If you don't have lives, game over
 
   this.player.setLives();
   this.player.x = 500;
