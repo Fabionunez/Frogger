@@ -7,7 +7,7 @@ let Game = function (canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   this.gameOver = false;
-  this.time = 500;
+  this.time = 400;
   this.widthTime = 150;
   this.xTime = 345;
   this.music = "";
@@ -24,6 +24,8 @@ let Game = function (canvas) {
   this.background.src = "./img/background.png";
   this.lives = new Image();
   this.lives.src = "./img/frog.png";
+  this.bonnusFly = new Image();
+  this.bonnusFly.src = "./img/bonus.png"
   //Sounds
   this.music = document.createElement("audio");
   this.music.src = ("./src/FroggerArcMainTrack.ogg");
@@ -32,6 +34,13 @@ let Game = function (canvas) {
   this.savedFrogSound = document.createElement("audio");
   this.savedFrogSound.src = ("./src/sound-frogger-extra.wav");
   this.savedFrogSound.volume = 0.1;
+
+
+  // this.randomBonus = 13;
+  // this.bonusFixed = false;
+  this.bonusTime = Date.now();
+  this.timeBetweenBonus = 8000;
+  this.bonusXPosition = null;
 
 }
 
@@ -56,6 +65,8 @@ Game.prototype.startLoop = function () { //Loop with requestAnimationFrame
     this.checkDrownFrog(); // If the player is in the water area and not in a log, he loses a live
     this.checkCollistions(); //canvas and obstacles
     this.gameWon(); // check if you saved all frogs and send you to the win page
+    this.checkWinBonus(); // check if you win a bonus
+
 
     if (this.gameOver === false) {
       window.requestAnimationFrame(loop);
@@ -109,6 +120,20 @@ Game.prototype.updateCanvas = function () {
   this.printScore(); // Update score points
 
   this.timer(); // Update timer and lose live if the time ends
+
+
+
+
+
+  if (this.checkIfBonus()) {
+    this.printBonus(this.bonusXPosition);
+  }
+  if (this.checkIfRemoveBonus()) {
+    this.removeBonus();
+  }
+
+
+
 
 }
 
@@ -207,7 +232,7 @@ Game.prototype.resetPayerPosition = function () { // Reset player position after
   //reset the time bar initial status
   this.widthTime = 150;
   this.xTime = 345;
-  this.time = 500;
+  this.time = 400;
 
   this.player.x = 300; // reset the initial position of the player
   this.player.y = 30000; // send the player outside the game
@@ -366,9 +391,15 @@ Game.prototype.checkOnFloat = function () { // Check if the player is on a log
 
 Game.prototype.loseLive = function () { // Lose a live and reset the live. If you don't have lives, game over
 
+
+  this.printBonus(3);
+
   this.player.setLives();
   this.player.x = 500;
   this.player.y = 30000;
+
+  // this.bonusXPosition = null; // Reset the bonus
+  // this.bonusTime = Date.now();
 
   this.loseLiveSound = document.createElement("audio");
   this.loseLiveSound.src = ("./src/sound-frogger-squash.wav");
@@ -377,7 +408,7 @@ Game.prototype.loseLive = function () { // Lose a live and reset the live. If yo
 
   this.widthTime = 150;
   this.xTime = 345;
-  this.time = 1000;
+  this.time = 400;
 
   setTimeout(() => {
     this.player.x = 300;
@@ -395,6 +426,7 @@ Game.prototype.loseLive = function () { // Lose a live and reset the live. If yo
 
 Game.prototype.gameWon = function () {
   if (this.savedFrog1 && this.savedFrog2 && this.savedFrog3 && this.savedFrog4 && this.savedFrog5) {
+    this.player.setScore(1000);
     this.gameOver = true;
     this.buildGameOverScreen("win", this.player.score);
     this.music.src = "";
@@ -405,4 +437,55 @@ Game.prototype.gameWon = function () {
 
 Game.prototype.setGameOverCallback = function (buildGameOverScreen) {
   this.buildGameOverScreen = buildGameOverScreen; // to access to the functions of other file
+}
+
+
+
+
+
+// if (this.checkIfBonus()) {
+//   this.printBonus(this.bonusXPosition);
+// }
+// if (this.checkIfRemoveBonus()) {
+//   this.removeBonus();
+// }
+
+Game.prototype.checkIfBonus = function () {
+  if (Date.now() > this.bonusTime + this.timeBetweenBonus) {
+    //this.bonusTime = Date.now();
+    if (this.bonusXPosition === null) {
+      this.bonusXPosition = Math.floor(Math.random() * 13); // 50px blocks
+    }
+    return true;
+  }
+  return false;
+}
+
+Game.prototype.checkIfRemoveBonus = function () {
+  if (Date.now() > this.bonusTime + this.timeBetweenBonus * 2) {
+    this.bonusTime = Date.now();
+    this.bonusXPosition = null;
+    return true;
+  }
+  return false;
+}
+
+
+Game.prototype.printBonus = function (position) {
+  this.ctx.drawImage(this.bonnusFly, 50 * position, 340, 50, 50);
+}
+
+Game.prototype.removeBonus = function () {
+  this.ctx.drawImage(this.bonnusFly, 50, 9000, 50, 50);
+
+}
+
+Game.prototype.checkWinBonus = function () {
+  if (this.bonusXPosition * 50 === this.player.x) {
+    this.bonusTime = Date.now();
+    this.bonusXPosition = null;
+    this.player.setScore(200);
+    let bonusSound = document.createElement("audio");
+    bonusSound.src = ("./src/bonus.mp3");
+  }
 }
