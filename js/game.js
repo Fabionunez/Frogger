@@ -39,7 +39,7 @@ let Game = function (canvas) {
   // this.randomBonus = 13;
   // this.bonusFixed = false;
   this.bonusTime = Date.now();
-  this.timeBetweenBonus = 8000;
+  this.timeBetweenBonus = 4000;
   this.bonusXPosition = null;
 
 }
@@ -330,6 +330,8 @@ Game.prototype.checkCollisionsCanvas = function () { // If the player collides w
 
 Game.prototype.checkDrownFrog = function () { // If the player is in the water and not in a log, he loses a live
   if (this.player.y < 340 && this.player.y >= 140) {
+    this.bonusTime = Date.now(); // don't show bonus if you are on logs
+    this.bonusXPosition = null;
     if (this.checkOnFloat() && this.player.y !== 90) {
       this.loseLive();
     }
@@ -477,7 +479,7 @@ Game.prototype.printBonus = function (position) {
 
 Game.prototype.removeBonus = function () {
   this.ctx.drawImage(this.bonnusFly, 50, 9000, 50, 50);
-
+  // not working
 }
 
 Game.prototype.checkWinBonus = function () {
@@ -487,5 +489,6 @@ Game.prototype.checkWinBonus = function () {
     this.player.setScore(200);
     let bonusSound = document.createElement("audio");
     bonusSound.src = ("./src/bonus.mp3");
+    bonusSound.play();
   }
 }
