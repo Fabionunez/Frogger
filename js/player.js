@@ -7,19 +7,44 @@ let Player = function (canvas) {
   this.ctx = this.canvas.getContext("2d");
   this.direction = "n";
   this.score = 0;
-  this.playerImage = new Image();
-  this.playerImage.src = "./img/frog.png";
+
+  // this.playerImage.src = "./img/frog.png";
 }
 
 
 
 Player.prototype.draw = function () {
-  this.ctx.drawImage(this.playerImage, this.x, this.y, this.size, this.size);
+
+  let playerImage = new Image();
+
+  switch (this.direction) { // Move player in every direction and ask for the score
+    case "n":
+
+      playerImage.src = "./img/frog.png";
+      break;
+    case "s":
+
+      playerImage.src = "./img/frog-s.png";
+      break;
+    case "e":
+
+      playerImage.src = "./img/frog-e.png";
+      break;
+    case "o":
+
+      playerImage.src = "./img/frog-o.png";
+      break;
+  }
+  this.ctx.drawImage(playerImage, this.x, this.y, this.size, this.size);
+
 }
 
 
 
 Player.prototype.setDirectionAndMove = function (direction) {
+
+
+
 
   this.direction = direction;
 

@@ -72,6 +72,26 @@ Game.prototype.clearCanvas = function () { // clean the canvas to repaint it eve
 
 
 
+
+
+Game.prototype.drawCanvas = function () { // Draw initial elements
+
+  this.obstacles.forEach(function (obstacle) { // Draw obstacles
+    obstacle.draw();
+  });
+
+  this.floaters.forEach(function (floater) { // Draw floaters
+    floater.draw();
+  });
+
+  this.player.draw(); // Draw player
+
+}
+
+
+
+
+
 Game.prototype.updateCanvas = function () {
 
   this.obstacles.forEach(function (obstacle) { // Update positions obstacles
@@ -109,7 +129,7 @@ Game.prototype.printLives = function () { // check how many lives you have and p
 
 
 
-Game.prototype.printScore = function () {
+Game.prototype.printScore = function () { // Print and update score
   this.ctx.fillStyle = "white";
   this.ctx.font = "20px 'Press Start 2P'";
   this.ctx.fillText("SCORE: " + this.player.score, 25, 38);
@@ -117,7 +137,7 @@ Game.prototype.printScore = function () {
 
 
 
-Game.prototype.timer = function () {
+Game.prototype.timer = function () { // print and update the time of each live and kill you if it ends
   this.ctx.fillStyle = "#FFFF03";
   this.ctx.font = "20px 'Press Start 2P'";
   this.ctx.fillText("TIME", 500, 680);
@@ -229,35 +249,10 @@ Game.prototype.checkSavedFrogs = function () { // Check if you save frogs and pr
 
 
 
+Game.prototype.createFloaters = function () { // Create enought floaters in each row for the time in each live
 
-Game.prototype.drawCanvas = function () { // Draw initial elements
-
-  // Draw obstacles
-  this.obstacles.forEach(function (obstacle) {
-    obstacle.draw();
-  });
-
-  // Draw floaters
-  this.floaters.forEach(function (floater) {
-    floater.draw();
-  });
-
-  // Draw player
-  this.player.draw();
-
-}
-
-
-
-
-
-
-
-Game.prototype.createFloaters = function () {
-
-  // (canvas, speed, row, direction, width, x, y)
-  for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
-    this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 120, 0 - i, 290));
+  for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) { // control the number of elements of the lane
+    this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 120, 0 - i, 290)); // (canvas, speed, row, direction, width, x, y)
   }
 
   for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
@@ -282,8 +277,7 @@ Game.prototype.createObstacles = function () {
 
   // Canvas width divided by the number of obstacles and multiply for 200 (number of elements necesaries to keep up three lives)
   for (var i = 0; i < (this.canvas.width / 2.5) * 200; i += (this.canvas.width / 2.5)) {
-    // (canvas, speed, row, direction, width, x, y)
-    this.obstacles.push(new Obstacles(this.canvas, 6, 1, -1, 37, 0 + i, 540));
+    this.obstacles.push(new Obstacles(this.canvas, 6, 1, -1, 37, 0 + i, 540)); // (canvas, speed, row, direction, width, x, y)
   }
 
   for (var i = 0; i < (this.canvas.width / 2.5) * 200; i += (this.canvas.width / 2.5)) {
