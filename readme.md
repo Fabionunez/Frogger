@@ -87,6 +87,8 @@ Game.prototype.checkIfRemoveBonus()
 Game.prototype.printBonus()
 ```
 
+obstacles.js
+
 ```
 Obstacles(){
 this.canvas
@@ -112,8 +114,9 @@ Obstacles.prototype.draw()
 Obstacles.prototype.update()
 ```
 
-```
 player.js
+
+```
 Player(){
 this.lives
 this.size
@@ -140,8 +143,9 @@ Player.prototype.setScore()
 Player.prototype.checkCollisions()
 ```
 
-```
 floaters.js
+
+```
 Floaters(){
 this.canvas
 this.ctx
