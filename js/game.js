@@ -7,16 +7,16 @@ let Game = function (canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   this.gameOver = false;
-  this.time = 400;
+  this.time = 800;
   this.widthTime = 150;
   this.xTime = 345;
   this.music = "";
   this.onTheFloater = false;
-  this.savedFrog1 = false;
-  this.savedFrog2 = false;
+  this.savedFrog1 = true;
+  this.savedFrog2 = true;
   this.savedFrog3 = false;
-  this.savedFrog4 = false;
-  this.savedFrog5 = false;
+  this.savedFrog4 = true;
+  this.savedFrog5 = true;
   //Images
   this.savedFrogImage = new Image();
   this.savedFrogImage.src = "./img/frog-saved.png";
@@ -231,7 +231,7 @@ Game.prototype.resetPayerPosition = function () { // Reset player position after
   //reset the time bar initial status
   this.widthTime = 150;
   this.xTime = 345;
-  this.time = 400;
+  this.time = 800;
 
   this.player.x = 300; // reset the initial position of the player
   this.player.y = 30000; // send the player outside the game
@@ -240,7 +240,7 @@ Game.prototype.resetPayerPosition = function () { // Reset player position after
 
   setTimeout(() => { // reset the position after a while
     this.player.y = 590;
-  }, 800)
+  }, 400)
 
   if (this.gameOver === false) { //resume the background music after the savedFrogSound ends
     setTimeout(() => {
@@ -276,19 +276,19 @@ Game.prototype.checkSavedFrogs = function () { // Check if you save frogs and pr
 Game.prototype.createFloaters = function () { // Create enought floaters in each row for the time in each live
 
   for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) { // control the number of elements of the lane
-    this.floaters.push(new Floaters(this.canvas, 3, 1, 1, 120, 0 - i, 290)); // (canvas, speed, row, direction, width, x, y)
+    this.floaters.push(new Floaters(this.canvas, 3 / 2, 1, 1, 120, 0 - i, 290)); // (canvas, speed, row, direction, width, x, y)
   }
 
   for (var i = 0; i < (this.canvas.width / 3) * 200; i += (this.canvas.width / 3)) {
-    this.floaters.push(new Floaters(this.canvas, 1.5, 2, -1, 120, 0 + i, 240));
+    this.floaters.push(new Floaters(this.canvas, 1.5 / 2, 2, -1, 120, 0 + i, 240));
   }
 
   for (var i = 0; i < (this.canvas.width / 2) * 200; i += (this.canvas.width / 2)) {
-    this.floaters.push(new Floaters(this.canvas, 5, 3, 1, 120, 0 - i, 190));
+    this.floaters.push(new Floaters(this.canvas, 5 / 2, 3, 1, 120, 0 - i, 190));
   }
 
   for (var i = 0; i < (this.canvas.width / 2.5) * 200; i += (this.canvas.width / 2.5)) {
-    this.floaters.push(new Floaters(this.canvas, 6, 4, -1, 120, 0 + i, 140));
+    this.floaters.push(new Floaters(this.canvas, 6 / 2, 4, -1, 120, 0 + i, 140));
   }
 }
 
@@ -301,19 +301,19 @@ Game.prototype.createObstacles = function () {
 
   // Canvas width divided by the number of obstacles and multiply for 200 (number of elements necesaries to keep up three lives)
   for (var i = 0; i < (this.canvas.width / 2.5) * 200; i += (this.canvas.width / 2.5)) {
-    this.obstacles.push(new Obstacles(this.canvas, 6, 1, -1, 37, 0 + i, 540)); // (canvas, speed, row, direction, width, x, y)
+    this.obstacles.push(new Obstacles(this.canvas, 6 / 2, 1, -1, 37, 0 + i, 540)); // (canvas, speed, row, direction, width, x, y)
   }
 
   for (var i = 0; i < (this.canvas.width / 2.5) * 200; i += (this.canvas.width / 2.5)) {
-    this.obstacles.push(new Obstacles(this.canvas, 3, 2, 1, 37, 550 - i, 490));
+    this.obstacles.push(new Obstacles(this.canvas, 3 / 2, 2, 1, 37, 550 - i, 490));
   }
 
   for (var i = 0; i < (this.canvas.width / 2.5) * 200; i += (this.canvas.width / 2.5)) {
-    this.obstacles.push(new Obstacles(this.canvas, 4, 3, -1, 37, 0 + i, 440));
+    this.obstacles.push(new Obstacles(this.canvas, 4 / 2, 3, -1, 37, 0 + i, 440));
   }
 
   for (var i = 0; i < (this.canvas.width / 2) * 200; i += (this.canvas.width / 2)) {
-    this.obstacles.push(new Obstacles(this.canvas, 13, 4, 1, 37, 630 - i, 390));
+    this.obstacles.push(new Obstacles(this.canvas, 13 / 2, 4, 1, 37, 630 - i, 390));
   }
 }
 
@@ -409,12 +409,12 @@ Game.prototype.loseLive = function () { // Lose a live and reset the live. If yo
 
   this.widthTime = 150;
   this.xTime = 345;
-  this.time = 400;
+  this.time = 800;
 
   setTimeout(() => {
     this.player.x = 300;
     this.player.y = 590;
-  }, 800)
+  }, 400)
 
   if (this.player.lives === 0) {
     this.gameOver = true;
@@ -427,7 +427,8 @@ Game.prototype.loseLive = function () { // Lose a live and reset the live. If yo
 
 Game.prototype.gameWon = function () {
   if (this.savedFrog1 && this.savedFrog2 && this.savedFrog3 && this.savedFrog4 && this.savedFrog5) {
-    this.player.setScore(1000);
+    this.player.setScore(1000); // 1000 points for saving the 5 frogs
+    this.player.setScore(this.player.lives * 500); //500 points extra for each live you have left
     this.gameOver = true;
     this.buildGameOverScreen("win", this.player.score);
     this.music.src = "";
@@ -482,6 +483,7 @@ Game.prototype.checkWinBonus = function () {
     this.player.setScore(200);
     let bonusSound = document.createElement("audio");
     bonusSound.src = ("./src/bonus.mp3");
+    bonusSound.volume = 0.07;
     bonusSound.play();
   }
 }
