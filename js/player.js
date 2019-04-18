@@ -16,7 +16,6 @@ let Player = function (canvas) {
   this.playerImageE.src = "./img/frog-e.png";
   this.playerImageO.src = "./img/frog-o.png";
   this.playerImage = this.playerImageN;
-
 }
 
 

@@ -12,11 +12,11 @@ let Game = function (canvas) {
   this.xTime = 345;
   this.music = "";
   this.onTheFloater = false;
-  this.savedFrog1 = true;
-  this.savedFrog2 = true;
+  this.savedFrog1 = false;
+  this.savedFrog2 = false;
   this.savedFrog3 = false;
-  this.savedFrog4 = true;
-  this.savedFrog5 = true;
+  this.savedFrog4 = false;
+  this.savedFrog5 = false;
   //Images
   this.savedFrogImage = new Image();
   this.savedFrogImage.src = "./img/frog-saved.png";
@@ -34,13 +34,10 @@ let Game = function (canvas) {
   this.savedFrogSound = document.createElement("audio");
   this.savedFrogSound.src = ("./src/sound-frogger-extra.wav");
   this.savedFrogSound.volume = 0.1;
-
-
   // Bonus
   this.bonusTime = Date.now();
   this.timeBetweenBonus = 3000;
   this.bonusXPosition = null;
-
 }
 
 
@@ -120,20 +117,12 @@ Game.prototype.updateCanvas = function () {
 
   this.timer(); // Update timer and lose live if the time ends
 
-
-
-
-
-  if (this.checkIfBonus()) {
+  if (this.checkIfBonus()) { // Check to print the bonus randomly
     this.printBonus(this.bonusXPosition);
   }
   if (this.checkIfRemoveBonus()) {
     this.removeBonus();
   }
-
-
-
-
 }
 
 
@@ -208,7 +197,7 @@ Game.prototype.frogSaved = function () { // Check if the player is in the save p
         this.savedFrog4 = true;
         this.resetPayerPosition();
       }
-    } else if (this.player.x >= 516 && this.player.x <= 600) {
+    } else if (this.player.x >= 505 && this.player.x <= 600) {
       if (this.savedFrog5) {
         this.loseLive();
       } else {
