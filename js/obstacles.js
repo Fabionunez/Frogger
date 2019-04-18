@@ -8,25 +8,31 @@ let Obstacles = function (canvas, speed, row, direction, width, x, y) {
   this.direction = direction;
   this.x = x;
   this.y = y;
+  this.obstacleImage = new Image();
+  this.obstacleImage1 = new Image();
+  this.obstacleImage2 = new Image();
+  this.obstacleImage3 = new Image();
+  this.obstacleImage4 = new Image();
+  this.obstacleImage1.src = "./img/obstacle1.png";
+  this.obstacleImage2.src = "./img/obstacle2.png";
+  this.obstacleImage3.src = "./img/obstacle3.png";
+  this.obstacleImage4.src = "./img/obstacle4.png";
+
 }
 
 
 
 Obstacles.prototype.draw = function () { // Create diferent images for each row of cars
   if (this.row === 1) {
-    var obstacleImage = new Image();
-    obstacleImage.src = "./img/obstacle1.png";
+    this.obstacleImage = this.obstacleImage1;
   } else if (this.row === 2) {
-    var obstacleImage = new Image();
-    obstacleImage.src = "./img/obstacle2.png";
+    this.obstacleImage = this.obstacleImage2;
   } else if (this.row === 3) {
-    var obstacleImage = new Image();
-    obstacleImage.src = "./img/obstacle3.png";
+    this.obstacleImage = this.obstacleImage3;
   } else if (this.row === 4) {
-    var obstacleImage = new Image();
-    obstacleImage.src = "./img/obstacle4.png";
+    this.obstacleImage = this.obstacleImage4;
   }
-  this.ctx.drawImage(obstacleImage, this.x, this.y, this.width, this.height);
+  this.ctx.drawImage(this.obstacleImage, this.x, this.y, this.width, this.height);
 
 }
 
