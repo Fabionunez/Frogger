@@ -6,19 +6,11 @@ Frogger is a classic arcade game, developed by Konami in 1981. The object of the
 
 ## MVP (DOM - CANVAS)
 
-MVP definition, deliverables.
-CANVAS, The mvp is a game where the player can move and obstacles that can kill him.
+The mvp is a game where the player can move and obstacles that can kill him.
 
 ## Backlog
 
-- score
-- timeout
-- logs rows
-- new win mode
-- images static
 - images animated
-- sounds
-- bonus prices
 - levels
 
 ## Data structure
@@ -184,12 +176,18 @@ Floaters.prototype.update()
 
 - main
 - screen transitions
+- intro help page
 - game
 - loop
 - player
 - player movement
 - obstacles
 - player collisions
+- floaters
+- lives
+- timer
+- bonus
+- save frogs
 - Game win
 - Game over
 
@@ -199,6 +197,9 @@ http://www.classicgaming.cc/classics/frogger/about
 
 ### Git
 
-https://github.com/Fabionunez/Frogger
+Git repository: https://github.com/Fabionunez/Frogger
+Git deploy: https://fabionunez.github.io/Frogger/
 
-### Slides
+### Presentation
+
+https://docs.google.com/presentation/d/1kQxkn_fHAXCxm3Y_oycFhSOdnXfjzhHjPSpfeBTx8UU/edit?usp=sharing
