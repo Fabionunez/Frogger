@@ -14,10 +14,10 @@ let Game = function (canvas, name) {
   this.music = "";
   this.onTheFloater = false;
   this.savedFrog1 = false;
-  this.savedFrog2 = true;
-  this.savedFrog3 = true;
-  this.savedFrog4 = true;
-  this.savedFrog5 = true;
+  this.savedFrog2 = false;
+  this.savedFrog3 = false;
+  this.savedFrog4 = false;
+  this.savedFrog5 = false;
   //Images
   this.savedFrogImage = new Image();
   this.savedFrogImage.src = "./img/frog-saved.png";
