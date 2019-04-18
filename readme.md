@@ -10,6 +10,7 @@ The mvp is a game where the player can move and obstacles that can kill him.
 
 ## Backlog
 
+- score board
 - images animated
 - levels
 
@@ -19,6 +20,7 @@ game.js
 
 ```
 Game(){
+this.name
 this.player
 this.obstacles
 this.floaters
@@ -77,6 +79,7 @@ Game.prototype.setGameOverCallback()
 Game.prototype.checkIfBonus()
 Game.prototype.checkIfRemoveBonus()
 Game.prototype.printBonus()
+Game.prototype.printName()
 ```
 
 obstacles.js

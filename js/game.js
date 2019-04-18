@@ -1,6 +1,7 @@
 'use strict'
 
-let Game = function (canvas) {
+let Game = function (canvas, name) {
+  this.name = name;
   this.player = null;
   this.obstacles = [];
   this.floaters = [];
@@ -13,10 +14,10 @@ let Game = function (canvas) {
   this.music = "";
   this.onTheFloater = false;
   this.savedFrog1 = false;
-  this.savedFrog2 = false;
-  this.savedFrog3 = false;
-  this.savedFrog4 = false;
-  this.savedFrog5 = false;
+  this.savedFrog2 = true;
+  this.savedFrog3 = true;
+  this.savedFrog4 = true;
+  this.savedFrog5 = true;
   //Images
   this.savedFrogImage = new Image();
   this.savedFrogImage.src = "./img/frog-saved.png";
@@ -117,6 +118,8 @@ Game.prototype.updateCanvas = function () {
 
   this.timer(); // Update timer and lose live if the time ends
 
+  this.printName();
+
   if (this.checkIfBonus()) { // Check to print the bonus randomly
     this.printBonus(this.bonusXPosition);
   }
@@ -125,6 +128,14 @@ Game.prototype.updateCanvas = function () {
   }
 }
 
+
+Game.prototype.printName = function () {
+  this.ctx.fillStyle = "white";
+  this.ctx.textAlign = "right";
+  this.ctx.font = "20px 'Press Start 2P'";
+
+  this.ctx.fillText(this.name.toUpperCase(), 580, 45);
+}
 
 
 Game.prototype.printLives = function () { // check how many lives you have and print the icons
@@ -144,8 +155,9 @@ Game.prototype.printLives = function () { // check how many lives you have and p
 
 Game.prototype.printScore = function () { // Print and update score
   this.ctx.fillStyle = "white";
+  this.ctx.textAlign = "left";
   this.ctx.font = "20px 'Press Start 2P'";
-  this.ctx.fillText("SCORE: " + this.player.score, 25, 38);
+  this.ctx.fillText("SCORE: " + this.player.score, 25, 45);
 }
 
 
@@ -407,9 +419,9 @@ Game.prototype.loseLive = function () { // Lose a live and reset the live. If yo
 
   if (this.player.lives === 0) {
     this.gameOver = true;
-    console.log
-    this.buildGameOverScreen("losse", this.player.score);
+    this.buildGameOverScreen("losse", this.player.score, this.name);
     this.music.src = ""
+
   }
 
 }
@@ -419,7 +431,7 @@ Game.prototype.gameWon = function () {
     this.player.setScore(1000); // 1000 points for saving the 5 frogs
     this.player.setScore(this.player.lives * 500); //500 points extra for each live you have left
     this.gameOver = true;
-    this.buildGameOverScreen("win", this.player.score);
+    this.buildGameOverScreen("win", this.player.score, this.name);
     this.music.src = "";
   }
 }

@@ -5,6 +5,7 @@ function main() {
 
   const mainElement = document.querySelector("main");
 
+  var scoreBoard = [];
 
 
   function buildDom(html) {
@@ -18,16 +19,28 @@ function main() {
     let splashScreen = `
     <section>
     <p><img src="./img/logo.png" width="460" height="268"/></p>
+    <input id="userName" type="text" value="Insert your name..." maxlength="15">
     <button id="start-button">START GAME</button>
     </section>`;
 
     buildDom(splashScreen);
 
     const startButton = document.getElementById("start-button")
-    startButton.addEventListener("click", buildIntroScreen);
+
+    var nameInput = document.getElementById("userName");
+
+    nameInput.addEventListener("click", () => {
+
+      nameInput.value = "";
+    });
+
+    startButton.addEventListener("click", () => {
+      var name = document.getElementById("userName").value;
+      buildIntroScreen(name)
+    });
   }
 
-  function buildIntroScreen() {
+  function buildIntroScreen(name) {
     let helpScreen = `
     <section>
     <p><img src="./img/help.png" width="559" height="495"/></p>
@@ -37,13 +50,17 @@ function main() {
     buildDom(helpScreen);
 
     const startButton = document.getElementById("start-button")
-    startButton.addEventListener("click", buildGameScreen);
+    startButton.addEventListener("click", () => {
+
+
+      buildGameScreen(name)
+    });
   }
 
 
 
 
-  function buildGameScreen() {
+  function buildGameScreen(name) {
 
     let gameScreen = `
     <section class="game-container">
@@ -56,7 +73,7 @@ function main() {
     canvasElement.setAttribute("width", 600);
     canvasElement.setAttribute("height", 700);
 
-    var game = new Game(canvasElement);
+    var game = new Game(canvasElement, name);
     game.startLoop();
     game.setGameOverCallback(buildGameOverScreen);
 
@@ -77,29 +94,41 @@ function main() {
 
 
 
-  function buildGameOverScreen(result, score) {
+  function buildGameOverScreen(result, score, name) {
+
 
     if (result === "win") {
       var gameOverScreen = `
       <section>
       <h1>YOU WIN!</h1>
-      <p>${score} POINTS</p>
+      <p id="points">${name.toUpperCase()} ........ ${score} points</p>
       <button id="play-again-button">PLAY AGAIN</button>
       </section>
       `;
     } else {
+
       var gameOverScreen = `
       <section>
       <h1>GAME OVER</h1>
-      <p>${score} POINTS</p>
+      <p id="points">${name.toUpperCase()} ........ ${score} points</p>
       <button id="play-again-button">PLAY AGAIN</button>
+      <button id="new-player-button">NEW PLAYER</button>
       </section>`;
     }
 
     buildDom(gameOverScreen);
 
-    var playAgainButton = document.getElementById("play-again-button");
-    playAgainButton.addEventListener("click", buildGameScreen);
+    // var playAgainButton = document.getElementById("play-again-button");
+    // playAgainButton.addEventListener("click", buildGameScreen);
+    const playAgainButton = document.getElementById("play-again-button");
+    playAgainButton.addEventListener("click", () => {
+      buildGameScreen(name)
+    });
+
+    const newPlayerButton = document.getElementById("new-player-button");
+    newPlayerButton.addEventListener("click", () => {
+      buildSplashScreen(name)
+    });
   }
 
 

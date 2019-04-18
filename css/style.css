@@ -67,8 +67,24 @@ section {
 section p {
   font-family: 'Press Start 2P', cursive;
   font-size: 20px;
+  padding-bottom: 20px;
 }
 
+input {
+  height: 35px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 9px;
+  text-transform: uppercase;
+  color: grey;
+  width: 200px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+#points {
+  padding-top: 20px;
+  font-size: 15px;
+}
 
 .game-container {
   display: flex;
@@ -98,7 +114,7 @@ button {
   height: 30px;
   background-color: transparent;
   border: 0px solid transparent;
-  margin-top: 60px;
+  margin-top: 20px;
   color: white;
   font-family: 'Press Start 2P', cursive;
   font-size: 20px;
