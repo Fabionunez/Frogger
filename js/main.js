@@ -5,7 +5,19 @@ function main() {
 
   const mainElement = document.querySelector("main");
 
-  var scoreBoard = [];
+
+  var scoreString = window.localStorage.getItem("ranking");
+  console.log(scoreString);
+
+
+  if (scoreString === null) {
+    var scoreBoard = [];
+  } else {
+    var scoreBoard = [...JSON.parse(scoreString)];
+  }
+  console.log(typeof (scoreBoard));
+
+
 
 
   function buildDom(html) {
@@ -94,14 +106,35 @@ function main() {
 
 
 
+
   function buildGameOverScreen(result, score, name) {
+
+
+    window.localStorage.setItem("ranking", JSON.stringify(scoreBoard));
+
+    scoreBoard.push([name, score]);
+
+    scoreBoard.sort((a, b) => b[1] - a[1]);
+
+    scoreBoard.splice(6, 1);
+
+    var displayScoreBoard = "";
+
+    //console.log(scoreBoard);
+
+    for (var i = 0; i < scoreBoard.length; i++) {
+      displayScoreBoard += "<p id=\"points\">" + scoreBoard[i][0].toUpperCase() + " ........ " + scoreBoard[i][1] + " points</p>";
+    }
+
+
+
 
 
     if (result === "win") {
       var gameOverScreen = `
       <section>
       <h1>YOU WIN!</h1>
-      <p id="points">${name.toUpperCase()} ........ ${score} points</p>
+      ${displayScoreBoard}
       <button id="play-again-button">PLAY AGAIN</button>
       </section>
       `;
@@ -110,13 +143,16 @@ function main() {
       var gameOverScreen = `
       <section>
       <h1>GAME OVER</h1>
-      <p id="points">${name.toUpperCase()} ........ ${score} points</p>
+      ${displayScoreBoard}
       <button id="play-again-button">PLAY AGAIN</button>
       <button id="new-player-button">NEW PLAYER</button>
       </section>`;
     }
 
     buildDom(gameOverScreen);
+
+
+
 
     // var playAgainButton = document.getElementById("play-again-button");
     // playAgainButton.addEventListener("click", buildGameScreen);

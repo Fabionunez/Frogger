@@ -82,8 +82,12 @@ input {
 }
 
 #points {
-  padding-top: 20px;
+
   font-size: 15px;
+}
+
+#points:first {
+  padding-top: 30px;
 }
 
 .game-container {
